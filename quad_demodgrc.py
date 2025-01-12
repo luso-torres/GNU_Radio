@@ -65,57 +65,56 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
+        self.threshold = threshold = 0
         self.samp_rate = samp_rate = 3200000
         self.mode = mode = 0
         self.freq = freq = 10000
         self.f_c = f_c = 500000
         self.duration = duration = 1
-        self.coeff = coeff = 0.15
+        self.coeff = coeff = 0.10
         self.amplitude = amplitude = 0.9
 
         ##################################################
         # Blocks
         ##################################################
 
-        self.tab0 = Qt.QTabWidget()
-        self.tab0_widget_0 = Qt.QWidget()
-        self.tab0_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab0_widget_0)
-        self.tab0_grid_layout_0 = Qt.QGridLayout()
-        self.tab0_layout_0.addLayout(self.tab0_grid_layout_0)
-        self.tab0.addTab(self.tab0_widget_0, 'VCO')
-        self.tab0_widget_1 = Qt.QWidget()
-        self.tab0_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab0_widget_1)
-        self.tab0_grid_layout_1 = Qt.QGridLayout()
-        self.tab0_layout_1.addLayout(self.tab0_grid_layout_1)
-        self.tab0.addTab(self.tab0_widget_1, 'Demod')
-        self.tab0_widget_2 = Qt.QWidget()
-        self.tab0_layout_2 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab0_widget_2)
-        self.tab0_grid_layout_2 = Qt.QGridLayout()
-        self.tab0_layout_2.addLayout(self.tab0_grid_layout_2)
-        self.tab0.addTab(self.tab0_widget_2, 'Time')
-        self.tab0_widget_3 = Qt.QWidget()
-        self.tab0_layout_3 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab0_widget_3)
-        self.tab0_grid_layout_3 = Qt.QGridLayout()
-        self.tab0_layout_3.addLayout(self.tab0_grid_layout_3)
-        self.tab0.addTab(self.tab0_widget_3, 'Discriminator')
-        self.tab0_widget_4 = Qt.QWidget()
-        self.tab0_layout_4 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab0_widget_4)
-        self.tab0_grid_layout_4 = Qt.QGridLayout()
-        self.tab0_layout_4.addLayout(self.tab0_grid_layout_4)
-        self.tab0.addTab(self.tab0_widget_4, 'VCO_MOD')
-        self.top_layout.addWidget(self.tab0)
-        self._mode_range = qtgui.Range(0, 5, 1, 0, 1)
-        self._mode_win = qtgui.RangeWidget(self._mode_range, self.set_mode, "'mode'", "slider", float, QtCore.Qt.Horizontal)
-        self.top_layout.addWidget(self._mode_win)
+        self.tab = Qt.QTabWidget()
+        self.tab_widget_0 = Qt.QWidget()
+        self.tab_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_0)
+        self.tab_grid_layout_0 = Qt.QGridLayout()
+        self.tab_layout_0.addLayout(self.tab_grid_layout_0)
+        self.tab.addTab(self.tab_widget_0, 'VCO')
+        self.tab_widget_1 = Qt.QWidget()
+        self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
+        self.tab_grid_layout_1 = Qt.QGridLayout()
+        self.tab_layout_1.addLayout(self.tab_grid_layout_1)
+        self.tab.addTab(self.tab_widget_1, 'FM')
+        self.tab_widget_2 = Qt.QWidget()
+        self.tab_layout_2 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_2)
+        self.tab_grid_layout_2 = Qt.QGridLayout()
+        self.tab_layout_2.addLayout(self.tab_grid_layout_2)
+        self.tab.addTab(self.tab_widget_2, 'Discriminador')
+        self.tab_widget_3 = Qt.QWidget()
+        self.tab_layout_3 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_3)
+        self.tab_grid_layout_3 = Qt.QGridLayout()
+        self.tab_layout_3.addLayout(self.tab_grid_layout_3)
+        self.tab.addTab(self.tab_widget_3, 'ENVELOPE')
+        self.top_layout.addWidget(self.tab)
+        self._threshold_range = qtgui.Range(0, 5, 1, 0, 6)
+        self._threshold_win = qtgui.RangeWidget(self._threshold_range, self.set_threshold, "'threshold'", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.tab_layout_3.addWidget(self._threshold_win)
+        self._mode_range = qtgui.Range(0, 5, 1, 0, 6)
+        self._mode_win = qtgui.RangeWidget(self._mode_range, self.set_mode, "'mode'", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.tab_layout_3.addWidget(self._mode_win)
         self._freq_range = qtgui.Range(1000, 100000, 1000, 10000, 2)
         self._freq_win = qtgui.RangeWidget(self._freq_range, self.set_freq, "'freq'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.tab0_layout_0.addWidget(self._freq_win)
-        self._coeff_range = qtgui.Range(0.1, 1, .1, 0.15, 1)
-        self._coeff_win = qtgui.RangeWidget(self._coeff_range, self.set_coeff, "'coeff'", "slider", float, QtCore.Qt.Horizontal)
-        self.tab0_layout_3.addWidget(self._coeff_win)
+        self.top_layout.addWidget(self._freq_win)
+        self._coeff_range = qtgui.Range(0.1, 1, .1, 0.10, 10)
+        self._coeff_win = qtgui.RangeWidget(self._coeff_range, self.set_coeff, "'coeff'", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.tab_layout_3.addWidget(self._coeff_win)
         self._amplitude_range = qtgui.Range(0.1, 1, .1, 0.9, 2)
         self._amplitude_win = qtgui.RangeWidget(self._amplitude_range, self.set_amplitude, "'amplitude'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.tab0_layout_0.addWidget(self._amplitude_win)
+        self.top_layout.addWidget(self._amplitude_win)
         self.qtgui_time_sink_x_1_1 = qtgui.time_sink_f(
             (round(5*samp_rate/freq)), #size
             samp_rate, #samp_rate
@@ -163,7 +162,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_1_1.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_1_1_win = sip.wrapinstance(self.qtgui_time_sink_x_1_1.qwidget(), Qt.QWidget)
-        self.tab0_layout_4.addWidget(self._qtgui_time_sink_x_1_1_win)
+        self.tab_layout_1.addWidget(self._qtgui_time_sink_x_1_1_win)
         self.qtgui_time_sink_x_1_0 = qtgui.time_sink_f(
             (round(samp_rate/freq)), #size
             samp_rate, #samp_rate
@@ -211,7 +210,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_1_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_1_0_win = sip.wrapinstance(self.qtgui_time_sink_x_1_0.qwidget(), Qt.QWidget)
-        self.tab0_layout_3.addWidget(self._qtgui_time_sink_x_1_0_win)
+        self.tab_layout_2.addWidget(self._qtgui_time_sink_x_1_0_win)
         self.qtgui_time_sink_x_1 = qtgui.time_sink_f(
             (round(5*samp_rate/freq)), #size
             samp_rate, #samp_rate
@@ -259,7 +258,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_1.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_1_win = sip.wrapinstance(self.qtgui_time_sink_x_1.qwidget(), Qt.QWidget)
-        self.tab0_layout_2.addWidget(self._qtgui_time_sink_x_1_win)
+        self.tab_layout_0.addWidget(self._qtgui_time_sink_x_1_win)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
             (round(4*samp_rate/freq)), #size
             samp_rate, #samp_rate
@@ -307,7 +306,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab0_layout_1.addWidget(self._qtgui_time_sink_x_0_win)
+        self.tab_layout_3.addWidget(self._qtgui_time_sink_x_0_win)
         self.qtgui_freq_sink_x_1_1 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -350,7 +349,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_1_1.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_1_1_win = sip.wrapinstance(self.qtgui_freq_sink_x_1_1.qwidget(), Qt.QWidget)
-        self.tab0_layout_4.addWidget(self._qtgui_freq_sink_x_1_1_win)
+        self.tab_layout_1.addWidget(self._qtgui_freq_sink_x_1_1_win)
         self.qtgui_freq_sink_x_1_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -393,7 +392,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_1_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_1_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_1_0.qwidget(), Qt.QWidget)
-        self.tab0_layout_2.addWidget(self._qtgui_freq_sink_x_1_0_win)
+        self.tab_layout_2.addWidget(self._qtgui_freq_sink_x_1_0_win)
         self.qtgui_freq_sink_x_1 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -436,7 +435,7 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_1.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_1_win = sip.wrapinstance(self.qtgui_freq_sink_x_1.qwidget(), Qt.QWidget)
-        self.tab0_layout_0.addWidget(self._qtgui_freq_sink_x_1_win)
+        self.tab_layout_0.addWidget(self._qtgui_freq_sink_x_1_win)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -479,9 +478,9 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab0_layout_0.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.epy_block_0 = epy_block_0.blk(threshold=0, mode=mode, coeff=coeff)
-        self.blocks_vco_f_0 = blocks.vco_f(samp_rate, (2*c.pi*freq), (freq/f_c))
+        self.tab_layout_3.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.epy_block_0 = epy_block_0.blk(threshold=threshold, mode=mode, coeff=coeff)
+        self.blocks_vco_f_0 = blocks.vco_f(samp_rate, (2*c.pi*freq), 1)
         self.blocks_transcendental_0 = blocks.transcendental('atan', "float")
         self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_multiply_xx_0 = blocks.multiply_vff(1)
@@ -516,14 +515,14 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_delay_0, 0), (self.blocks_divide_xx_0, 1))
         self.connect((self.blocks_divide_xx_0, 0), (self.blocks_transcendental_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_throttle2_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_delay_0, 0))
+        self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_divide_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_freq_sink_x_1_1, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.qtgui_time_sink_x_1_1, 0))
         self.connect((self.blocks_throttle2_0, 0), (self.epy_block_0, 0))
         self.connect((self.blocks_throttle2_0, 0), (self.qtgui_freq_sink_x_1_0, 0))
         self.connect((self.blocks_throttle2_0, 0), (self.qtgui_time_sink_x_1_0, 0))
         self.connect((self.blocks_transcendental_0, 0), (self.blocks_multiply_const_vxx_0, 0))
-        self.connect((self.blocks_vco_f_0, 0), (self.blocks_delay_0, 0))
-        self.connect((self.blocks_vco_f_0, 0), (self.blocks_divide_xx_0, 0))
         self.connect((self.blocks_vco_f_0, 0), (self.blocks_multiply_xx_0, 1))
         self.connect((self.blocks_vco_f_0, 0), (self.qtgui_freq_sink_x_1, 0))
         self.connect((self.blocks_vco_f_0, 0), (self.qtgui_time_sink_x_1, 0))
@@ -537,6 +536,13 @@ class quad_demodgrc(gr.top_block, Qt.QWidget):
         self.wait()
 
         event.accept()
+
+    def get_threshold(self):
+        return self.threshold
+
+    def set_threshold(self, threshold):
+        self.threshold = threshold
+        self.epy_block_0.threshold = self.threshold
 
     def get_samp_rate(self):
         return self.samp_rate

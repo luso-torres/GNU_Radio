@@ -245,31 +245,6 @@ blocks:
     coordinate: [688, 960.0]
     rotation: 0
     state: enabled
-- name: band_pass_filter_0_0
-  id: band_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    decim: '1'
-    gain: '1'
-    high_cutoff_freq: freq+freq/10
-    interp: '1'
-    low_cutoff_freq: freq/10
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_fff
-    width: freq/20
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [528, 824.0]
-    rotation: 0
-    state: disabled
 - name: blocks_add_const_vxx_0
   id: blocks_add_const_vxx
   parameters:
@@ -332,7 +307,7 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    const: '100'
+    const: '10'
     maxoutbuf: '0'
     minoutbuf: '0'
     type: float
@@ -476,30 +451,6 @@ blocks:
     coordinate: [792, 24.0]
     rotation: 0
     state: enabled
-- name: low_pass_filter_0
-  id: low_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    cutoff_freq: 1.2*1e3
-    decim: '1'
-    gain: '1'
-    interp: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_fff
-    width: '200'
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [888, 792.0]
-    rotation: 0
-    state: disabled
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -1372,9 +1323,6 @@ connections:
 - [blocks_vco_f_0, '0', qtgui_time_sink_x_1, '0']
 - [blocks_vco_f_0, '0', virtual_sink_2, '0']
 - [epy_block_0, '0', band_pass_filter_0, '0']
-- [low_pass_filter_0, '0', qtgui_freq_sink_x_1_0, '0']
-- [low_pass_filter_0, '0', qtgui_time_sink_x_1_0, '0']
-- [low_pass_filter_0, '0', virtual_sink_1, '0']
 - [virtual_source_0, '0', qtgui_freq_sink_x_0, '1']
 - [virtual_source_0, '0', qtgui_time_sink_x_0, '1']
 - [virtual_source_1, '0', epy_block_0, '0']

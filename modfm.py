@@ -63,7 +63,7 @@ class modfm(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 320000
+        self.samp_rate = samp_rate = 3200000
         self.freq = freq = 1000
         self.f_c = f_c = 1000000
         self.amplitude = amplitude = 0.5
