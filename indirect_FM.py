@@ -12,8 +12,10 @@
 from PyQt5 import Qt
 from gnuradio import qtgui
 from PyQt5 import QtCore
+from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import analog
 from gnuradio import blocks
+from gnuradio import filter
 from gnuradio import gr
 from gnuradio.filter import firdes
 from gnuradio.fft import window
@@ -28,7 +30,7 @@ import sip
 
 
 
-class modfm(gr.top_block, Qt.QWidget):
+class indirect_FM(gr.top_block, Qt.QWidget):
 
     def __init__(self):
         gr.top_block.__init__(self, "Not titled yet", catch_exceptions=True)
@@ -51,7 +53,7 @@ class modfm(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "modfm")
+        self.settings = Qt.QSettings("GNU Radio", "indirect_FM")
 
         try:
             geometry = self.settings.value("geometry")
@@ -63,43 +65,53 @@ class modfm(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 3200000
-        self.freq = freq = 50000
-        self.f_c = f_c = 500000
-        self.amplitude = amplitude = 0.05
+        self.samp_rate = samp_rate = 320000
+        self.freq = freq = 1000
+        self.chooser = chooser = 0
 
         ##################################################
         # Blocks
         ##################################################
 
-        self.tab = Qt.QTabWidget()
-        self.tab_widget_0 = Qt.QWidget()
-        self.tab_layout_0 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_0)
-        self.tab_grid_layout_0 = Qt.QGridLayout()
-        self.tab_layout_0.addLayout(self.tab_grid_layout_0)
-        self.tab.addTab(self.tab_widget_0, 'VCO_Tempo')
-        self.tab_widget_1 = Qt.QWidget()
-        self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
-        self.tab_grid_layout_1 = Qt.QGridLayout()
-        self.tab_layout_1.addLayout(self.tab_grid_layout_1)
-        self.tab.addTab(self.tab_widget_1, 'VCO_Freq')
-        self.top_layout.addWidget(self.tab)
-        self._freq_range = qtgui.Range(1000, 100000, 1000, 50000, 200)
-        self._freq_win = qtgui.RangeWidget(self._freq_range, self.set_freq, "'freq'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_grid_layout.addWidget(self._freq_win, 0, 1, 1, 1)
-        for r in range(0, 1):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.top_grid_layout.setColumnStretch(c, 1)
-        self._amplitude_range = qtgui.Range(0, 0.1, .01, 0.05, 200)
-        self._amplitude_win = qtgui.RangeWidget(self._amplitude_range, self.set_amplitude, "'amplitude'", "counter_slider", float, QtCore.Qt.Horizontal)
-        self.top_grid_layout.addWidget(self._amplitude_win, 0, 0, 1, 1)
+        self._freq_range = qtgui.Range(0, 10000, 10, 1000, 200)
+        self._freq_win = qtgui.RangeWidget(self._freq_range, self.set_freq, "Frequency", "counter_slider", float, QtCore.Qt.Horizontal)
+        self.top_grid_layout.addWidget(self._freq_win, 0, 0, 1, 1)
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
+        # Create the options list
+        self._chooser_options = [0, 1.5707963267948966]
+        # Create the labels list
+        self._chooser_labels = ['Cos', 'Sin']
+        # Create the combo box
+        # Create the radio buttons
+        self._chooser_group_box = Qt.QGroupBox("'chooser'" + ": ")
+        self._chooser_box = Qt.QVBoxLayout()
+        class variable_chooser_button_group(Qt.QButtonGroup):
+            def __init__(self, parent=None):
+                Qt.QButtonGroup.__init__(self, parent)
+            @pyqtSlot(int)
+            def updateButtonChecked(self, button_id):
+                self.button(button_id).setChecked(True)
+        self._chooser_button_group = variable_chooser_button_group()
+        self._chooser_group_box.setLayout(self._chooser_box)
+        for i, _label in enumerate(self._chooser_labels):
+            radio_button = Qt.QRadioButton(_label)
+            self._chooser_box.addWidget(radio_button)
+            self._chooser_button_group.addButton(radio_button, i)
+        self._chooser_callback = lambda i: Qt.QMetaObject.invokeMethod(self._chooser_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._chooser_options.index(i)))
+        self._chooser_callback(self.chooser)
+        self._chooser_button_group.buttonClicked[int].connect(
+            lambda i: self.set_chooser(self._chooser_options[i]))
+        self.top_grid_layout.addWidget(self._chooser_group_box, 0, 1, 1, 1)
+        for r in range(0, 1):
+            self.top_grid_layout.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.top_grid_layout.setColumnStretch(c, 1)
+        self.single_pole_iir_filter_xx_0 = filter.single_pole_iir_filter_ff(1, 1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-            (round(2*samp_rate/freq)), #size
+            (round(samp_rate/freq)), #size
             samp_rate, #samp_rate
             "", #name
             1, #number of inputs
@@ -119,7 +131,7 @@ class modfm(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.enable_stem_plot(False)
 
 
-        labels = ['Output', 'Nao integrado', 'Signal 3', 'Signal 4', 'Signal 5',
+        labels = ['Signal 1', 'Signal 2', 'Signal 3', 'Signal 4', 'Signal 5',
             'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -145,11 +157,7 @@ class modfm(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab_grid_layout_0.addWidget(self._qtgui_time_sink_x_0_win, 1, 2, 1, 1)
-        for r in range(1, 2):
-            self.tab_grid_layout_0.setRowStretch(r, 1)
-        for c in range(2, 3):
-            self.tab_grid_layout_0.setColumnStretch(c, 1)
+        self.top_layout.addWidget(self._qtgui_time_sink_x_0_win)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -167,13 +175,13 @@ class modfm(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0.enable_grid(False)
         self.qtgui_freq_sink_x_0.set_fft_average(1.0)
         self.qtgui_freq_sink_x_0.enable_axis_labels(True)
-        self.qtgui_freq_sink_x_0.enable_control_panel(True)
+        self.qtgui_freq_sink_x_0.enable_control_panel(False)
         self.qtgui_freq_sink_x_0.set_fft_window_normalized(False)
 
 
         self.qtgui_freq_sink_x_0.set_plot_pos_half(not True)
 
-        labels = ['Output', 'Nao Integrado', '', '', '',
+        labels = ['', '', '', '', '',
             '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -192,29 +200,25 @@ class modfm(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 1, 1, 1, 1)
-        for r in range(1, 2):
-            self.tab_grid_layout_0.setRowStretch(r, 1)
-        for c in range(1, 2):
-            self.tab_grid_layout_0.setColumnStretch(c, 1)
-        self.blocks_vco_f_0 = blocks.vco_f(samp_rate, (2*np.pi*f_c), 1)
-        self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
-        self.blocks_add_const_vxx_0 = blocks.add_const_ff(1)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, freq, amplitude, 0, 0)
+        self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.blocks_selector_0 = blocks.selector(gr.sizeof_float*1,0,0)
+        self.blocks_selector_0.set_enabled(True)
+        self.analog_sig_source_x_0_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, freq, 1, 0, chooser)
+        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, freq, 1, 0, chooser)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_add_const_vxx_0, 0))
-        self.connect((self.blocks_add_const_vxx_0, 0), (self.blocks_vco_f_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.blocks_throttle_0, 0), (self.qtgui_time_sink_x_0, 0))
-        self.connect((self.blocks_vco_f_0, 0), (self.blocks_throttle_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_selector_0, 0))
+        self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_selector_0, 1))
+        self.connect((self.blocks_selector_0, 0), (self.single_pole_iir_filter_xx_0, 0))
+        self.connect((self.single_pole_iir_filter_xx_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.single_pole_iir_filter_xx_0, 0), (self.qtgui_time_sink_x_0, 0))
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "modfm")
+        self.settings = Qt.QSettings("GNU Radio", "indirect_FM")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -227,7 +231,7 @@ class modfm(gr.top_block, Qt.QWidget):
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-        self.blocks_throttle_0.set_sample_rate(self.samp_rate)
+        self.analog_sig_source_x_0_0.set_sampling_freq(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
 
@@ -237,24 +241,21 @@ class modfm(gr.top_block, Qt.QWidget):
     def set_freq(self, freq):
         self.freq = freq
         self.analog_sig_source_x_0.set_frequency(self.freq)
+        self.analog_sig_source_x_0_0.set_frequency(self.freq)
 
-    def get_f_c(self):
-        return self.f_c
+    def get_chooser(self):
+        return self.chooser
 
-    def set_f_c(self, f_c):
-        self.f_c = f_c
-
-    def get_amplitude(self):
-        return self.amplitude
-
-    def set_amplitude(self, amplitude):
-        self.amplitude = amplitude
-        self.analog_sig_source_x_0.set_amplitude(self.amplitude)
+    def set_chooser(self, chooser):
+        self.chooser = chooser
+        self._chooser_callback(self.chooser)
+        self.analog_sig_source_x_0.set_phase(self.chooser)
+        self.analog_sig_source_x_0_0.set_phase(self.chooser)
 
 
 
 
-def main(top_block_cls=modfm, options=None):
+def main(top_block_cls=indirect_FM, options=None):
 
     qapp = Qt.QApplication(sys.argv)
 

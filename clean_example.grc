@@ -1,6 +1,6 @@
 options:
   parameters:
-    author: luso
+    author: ''
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: modfm
+    id: clean_example
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -33,65 +33,53 @@ options:
     state: enabled
 
 blocks:
-- name: amplitude
+- name: amp
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 0,0
+    gui_hint: 0,2,1,1
     label: ''
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
+    min_len: '10'
+    orient: QtCore.Qt.Vertical
     rangeType: float
-    start: '0'
-    step: '.01'
-    stop: '0.1'
-    value: '0.05'
-    widget: counter_slider
+    start: '0.1'
+    step: '.1'
+    stop: '1'
+    value: '0.5'
+    widget: slider
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [432, 12.0]
-    rotation: 0
-    state: enabled
-- name: f_c
-  id: variable
-  parameters:
-    comment: ''
-    value: '500000'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 32.0]
+    coordinate: [600, 4.0]
     rotation: 0
     state: enabled
 - name: freq
   id: variable_qtgui_range
   parameters:
     comment: ''
-    gui_hint: 0,1
+    gui_hint: 0,1,1,1
     label: ''
-    min_len: '200'
-    orient: QtCore.Qt.Horizontal
+    min_len: '101'
+    orient: QtCore.Qt.Vertical
     rangeType: float
-    start: '1000'
-    step: '1000'
-    stop: '100000'
-    value: '50000'
-    widget: counter_slider
+    start: '0'
+    step: '1'
+    stop: '100'
+    value: '50'
+    widget: dial
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [616, 12.0]
+    coordinate: [440, 4.0]
     rotation: 0
     state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '3200000'
+    value: '32000'
   states:
     bus_sink: false
     bus_source: false
@@ -104,7 +92,7 @@ blocks:
   parameters:
     affinity: ''
     alias: ''
-    amp: amplitude
+    amp: amp
     comment: ''
     freq: freq
     maxoutbuf: '0'
@@ -114,80 +102,12 @@ blocks:
     samp_rate: samp_rate
     showports: 'False'
     type: float
-    waveform: analog.GR_SIN_WAVE
+    waveform: analog.GR_COS_WAVE
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [144, 236.0]
-    rotation: 0
-    state: enabled
-- name: blocks_add_const_vxx_0
-  id: blocks_add_const_vxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    const: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [528, 280.0]
-    rotation: 0
-    state: enabled
-- name: blocks_throttle_0
-  id: blocks_throttle
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1064, 280.0]
-    rotation: 0
-    state: enabled
-- name: blocks_vco_f_0
-  id: blocks_vco_f
-  parameters:
-    affinity: ''
-    alias: ''
-    amplitude: '1'
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    sensitivity: 2*np.pi*f_c
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [832, 260.0]
-    rotation: 0
-    state: enabled
-- name: import_0
-  id: import
-  parameters:
-    alias: ''
-    comment: ''
-    imports: import numpy as np
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1008, 64.0]
+    coordinate: [472, 296.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -220,16 +140,16 @@ blocks:
     color8: '"dark red"'
     color9: '"dark green"'
     comment: ''
-    ctrlpanel: 'True'
+    ctrlpanel: 'False'
     fc: '0'
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
-    gui_hint: 'tab@0: 1,1'
+    gui_hint: ''
     label: Relative Gain
-    label1: Output
+    label1: ''
     label10: ''''''
-    label2: Nao Integrado
+    label2: ''''''
     label3: ''''''
     label4: ''''''
     label5: ''''''
@@ -268,7 +188,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 380.0]
+    coordinate: [976, 452.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -299,13 +219,13 @@ blocks:
     color8: dark red
     color9: dark green
     comment: ''
-    ctrlpanel: 'True'
+    ctrlpanel: 'False'
     entags: 'True'
     grid: 'False'
-    gui_hint: 'tab@0: 1,2'
-    label1: Output
+    gui_hint: ''
+    label1: Signal 1
     label10: Signal 10
-    label2: Nao integrado
+    label2: Signal 2
     label3: Signal 3
     label4: Signal 4
     label5: Signal 5
@@ -326,7 +246,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '1'
-    size: round(2*samp_rate/freq)
+    size: '1024'
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -365,64 +285,13 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1296, 172.0]
-    rotation: 0
-    state: enabled
-- name: tab
-  id: qtgui_tab_widget
-  parameters:
-    alias: ''
-    comment: ''
-    gui_hint: ''
-    label0: VCO_Tempo
-    label1: VCO_Freq
-    label10: Tab 10
-    label11: Tab 11
-    label12: Tab 12
-    label13: Tab 13
-    label14: Tab 14
-    label15: Tab 15
-    label16: Tab 16
-    label17: Tab 17
-    label18: Tab 18
-    label19: Tab 19
-    label2: Tab 2
-    label3: Tab 3
-    label4: Tab 4
-    label5: Tab 5
-    label6: Tab 6
-    label7: Tab 7
-    label8: Tab 8
-    label9: Tab 9
-    num_tabs: '2'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1272, 20.0]
-    rotation: 0
-    state: enabled
-- name: virtual_sink_0
-  id: virtual_sink
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: VCO
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1320, 280.0]
+    coordinate: [984, 272.0]
     rotation: 0
     state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', blocks_add_const_vxx_0, '0']
-- [blocks_add_const_vxx_0, '0', blocks_vco_f_0, '0']
-- [blocks_throttle_0, '0', qtgui_freq_sink_x_0, '0']
-- [blocks_throttle_0, '0', qtgui_time_sink_x_0, '0']
-- [blocks_throttle_0, '0', virtual_sink_0, '0']
-- [blocks_vco_f_0, '0', blocks_throttle_0, '0']
+- [analog_sig_source_x_0, '0', qtgui_freq_sink_x_0, '0']
+- [analog_sig_source_x_0, '0', qtgui_time_sink_x_0, '0']
 
 metadata:
   file_format: 1
