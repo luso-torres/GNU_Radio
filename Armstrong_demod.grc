@@ -65,8 +65,8 @@ blocks:
     rangeType: float
     start: '0'
     step: '1'
-    stop: '10000'
-    value: freq
+    stop: '75000'
+    value: '75000'
     widget: eng
   states:
     bus_sink: false
@@ -79,7 +79,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '50000'
+    value: '100000'
   states:
     bus_sink: false
     bus_source: false
@@ -95,7 +95,7 @@ blocks:
     gui_hint: ''
     label: Frequency Local Oscillator
     type: int
-    value: '15000'
+    value: '0'
   states:
     bus_sink: false
     bus_source: false
@@ -128,7 +128,7 @@ blocks:
   id: variable
   parameters:
     comment: ''
-    value: '3200000'
+    value: '320000'
   states:
     bus_sink: false
     bus_source: false
@@ -142,16 +142,16 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-    max_freq: 2* np.pi *(f_c+df)/samp_rate
+    max_freq: 2* np.pi *df/samp_rate
     maxoutbuf: '0'
-    min_freq: 2* np.pi *(f_c-df)/samp_rate
+    min_freq: 2* np.pi *df/samp_rate
     minoutbuf: '0'
-    w: 2 * np.pi * df /samp_rate*2
+    w: 2 * np.pi * 1
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [600, 1572.0]
+    coordinate: [640, 1556.0]
     rotation: 0
     state: enabled
 - name: analog_pll_freqdet_cf_0
@@ -314,58 +314,8 @@ blocks:
     coordinate: [896, 704.0]
     rotation: 0
     state: disabled
-- name: band_pass_filter_0_1
-  id: band_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    decim: '1'
-    gain: '2'
-    high_cutoff_freq: 3*f_c+df-f_lo
-    interp: '1'
-    low_cutoff_freq: 3*f_c-df-f_lo
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_fff
-    width: df/10
-    win: window.WIN_RECTANGULAR
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [600, 1264.0]
-    rotation: 0
-    state: enabled
-- name: band_pass_filter_1
-  id: band_pass_filter
-  parameters:
-    affinity: ''
-    alias: ''
-    beta: '6.76'
-    comment: ''
-    decim: '1'
-    gain: samp_rate/freq
-    high_cutoff_freq: df + freq/100
-    interp: '1'
-    low_cutoff_freq: df - freq/100
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_rate: samp_rate
-    type: fir_filter_ccf
-    width: df/10
-    win: window.WIN_HAMMING
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [864, 1648.0]
-    rotation: 0
-    state: enabled
-- name: blocks_complex_to_float_0
-  id: blocks_complex_to_float
+- name: blocks_complex_to_arg_0
+  id: blocks_complex_to_arg
   parameters:
     affinity: ''
     alias: ''
@@ -377,7 +327,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1104, 1552.0]
+    coordinate: [912, 1712.0]
     rotation: 0
     state: enabled
 - name: blocks_head_0
@@ -398,6 +348,22 @@ blocks:
     coordinate: [848, 608.0]
     rotation: 0
     state: disabled
+- name: blocks_multiply_conjugate_cc_0
+  id: blocks_multiply_conjugate_cc
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [624, 1776.0]
+    rotation: 0
+    state: enabled
 - name: blocks_multiply_const_vxx_0
   id: blocks_multiply_const_vxx
   parameters:
@@ -602,25 +568,6 @@ blocks:
     bus_structure: null
     coordinate: [376, 1568.0]
     rotation: 0
-    state: disabled
-- name: fir_filter_xxx_1
-  id: fir_filter_xxx
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    decim: '1'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samp_delay: '0'
-    taps: '1'
-    type: fcc
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [336, 1584.0]
-    rotation: 0
     state: enabled
 - name: import_1
   id: import
@@ -633,6 +580,30 @@ blocks:
     bus_source: false
     bus_structure: null
     coordinate: [1168, 208.0]
+    rotation: 0
+    state: enabled
+- name: low_pass_filter_0
+  id: low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '15000'
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    samp_rate: samp_rate
+    type: fir_filter_fff
+    width: '1000'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1040, 1528.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -917,7 +888,7 @@ blocks:
     label: Relative Gain
     label1: Original
     label10: ''''''
-    label2: Indireto
+    label2: Harmonico
     label3: ''''''
     label4: ''''''
     label5: ''''''
@@ -956,7 +927,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 1412.0]
+    coordinate: [736, 1404.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0_0_0_0_0
@@ -1365,7 +1336,7 @@ blocks:
     gui_hint: tab@0
     label1: Original
     label10: Signal 10
-    label2: Indireto
+    label2: Modulado Indiretamente
     label3: Signal 3
     label4: Signal 4
     label5: Signal 5
@@ -1425,7 +1396,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 1236.0]
+    coordinate: [752, 1244.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0_0_0_0_0
@@ -1532,7 +1503,7 @@ blocks:
     comment: ''
     gui_hint: ''
     label0: Indirect Method
-    label1: Second Harmonic
+    label1: HARMONICO 2
     label10: Tab 10
     label11: Tab 11
     label12: Tab 12
@@ -1543,8 +1514,8 @@ blocks:
     label17: Tab 17
     label18: Tab 18
     label19: Tab 19
-    label2: Third Harmonic
-    label3: Signal Demodulated
+    label2: HARMONICO 3
+    label3: Demodulado
     label4: xdd
     label5: Tab 5
     label6: Tab 6
@@ -1712,7 +1683,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [904, 1344.0]
+    coordinate: [744, 1344.0]
     rotation: 180
     state: enabled
 - name: virtual_source_0_0_0_0_1_1_0_2_1_0
@@ -1777,7 +1748,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 1592.0]
+    coordinate: [136, 1576.0]
     rotation: 0
     state: enabled
 - name: virtual_source_3
@@ -1808,7 +1779,7 @@ blocks:
     state: disabled
 
 connections:
-- [analog_pll_carriertracking_cc_0, '0', band_pass_filter_1, '0']
+- [analog_pll_carriertracking_cc_0, '0', blocks_multiply_conjugate_cc_0, '1']
 - [analog_pll_freqdet_cf_0, '0', qtgui_freq_sink_x_0_0_0_0_0, '1']
 - [analog_pll_freqdet_cf_0, '0', qtgui_time_sink_x_0_0_0_0_0, '1']
 - [analog_sig_source_x_0, '0', blocks_multiply_xx_0, '1']
@@ -1820,20 +1791,18 @@ connections:
 - [band_pass_filter_0_0, '0', qtgui_freq_sink_x_0_0, '1']
 - [band_pass_filter_0_0, '0', qtgui_time_sink_x_0_0, '1']
 - [band_pass_filter_0_0, '0', virtual_sink_1_0, '0']
-- [band_pass_filter_0_1, '0', qtgui_freq_sink_x_0_0_0_0, '1']
-- [band_pass_filter_0_1, '0', qtgui_time_sink_x_0_0_0_0, '1']
-- [band_pass_filter_1, '0', blocks_complex_to_float_0, '0']
-- [blocks_complex_to_float_0, '0', qtgui_freq_sink_x_0_0_0_0_0, '1']
-- [blocks_complex_to_float_0, '0', qtgui_time_sink_x_0_0_0_0_0, '1']
+- [blocks_complex_to_arg_0, '0', low_pass_filter_0, '0']
 - [blocks_head_0, '0', band_pass_filter_0_0, '0']
 - [blocks_head_0, '0', qtgui_freq_sink_x_0_0, '1']
 - [blocks_head_0, '0', qtgui_time_sink_x_0_0, '1']
 - [blocks_head_0, '0', virtual_sink_1_0, '0']
+- [blocks_multiply_conjugate_cc_0, '0', blocks_complex_to_arg_0, '0']
 - [blocks_multiply_const_vxx_0, '0', dc_blocker_xx_0, '0']
 - [blocks_multiply_xx_0, '0', blocks_sub_xx_0, '1']
 - [blocks_multiply_xx_0_0, '0', blocks_throttle2_0, '0']
 - [blocks_multiply_xx_0_0_0, '0', blocks_throttle2_0_0, '0']
-- [blocks_multiply_xx_1, '0', band_pass_filter_0_1, '0']
+- [blocks_multiply_xx_1, '0', qtgui_freq_sink_x_0_0_0_0, '1']
+- [blocks_multiply_xx_1, '0', qtgui_time_sink_x_0_0_0_0, '1']
 - [blocks_sub_xx_0, '0', qtgui_freq_sink_x_0, '0']
 - [blocks_sub_xx_0, '0', qtgui_time_sink_x_0, '0']
 - [blocks_sub_xx_0, '0', virtual_sink_0, '0']
@@ -1848,7 +1817,9 @@ connections:
 - [dc_blocker_xx_0_0, '0', virtual_sink_1_0_0, '0']
 - [fir_filter_xxx_0, '0', analog_pll_carriertracking_cc_0, '0']
 - [fir_filter_xxx_0, '0', analog_pll_freqdet_cf_0, '0']
-- [fir_filter_xxx_1, '0', analog_pll_carriertracking_cc_0, '0']
+- [fir_filter_xxx_0, '0', blocks_multiply_conjugate_cc_0, '0']
+- [low_pass_filter_0, '0', qtgui_freq_sink_x_0_0_0_0_0, '1']
+- [low_pass_filter_0, '0', qtgui_time_sink_x_0_0_0_0_0, '1']
 - [virtual_source_0, '0', blocks_multiply_xx_0_0_0, '1']
 - [virtual_source_0_0_0_0_1_1_0, '0', qtgui_freq_sink_x_0_0, '0']
 - [virtual_source_0_0_0_0_1_1_0_0, '0', qtgui_time_sink_x_0_0, '0']
@@ -1863,7 +1834,6 @@ connections:
 - [virtual_source_0_0_0_0_1_1_0_3, '0', qtgui_time_sink_x_0_0_0, '0']
 - [virtual_source_1, '0', blocks_multiply_xx_1, '0']
 - [virtual_source_2, '0', fir_filter_xxx_0, '0']
-- [virtual_source_2, '0', fir_filter_xxx_1, '0']
 
 metadata:
   file_format: 1

@@ -23,6 +23,7 @@ import signal
 from PyQt5 import Qt
 from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
+import numpy as np
 import sip
 
 
@@ -64,10 +65,10 @@ class Armstrong(gr.top_block, Qt.QWidget):
         ##################################################
         self.freq = freq = 10000
         self.samp_rate = samp_rate = 3200000
-        self.f_lo = f_lo = 25000
+        self.f_lo = f_lo = 15000
         self.f_c = f_c = 50000
         self.df = df = freq
-        self.amp = amp = 0
+        self.amp = amp = 1
 
         ##################################################
         # Blocks
@@ -90,12 +91,17 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.tab_layout_1 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_1)
         self.tab_grid_layout_1 = Qt.QGridLayout()
         self.tab_layout_1.addLayout(self.tab_grid_layout_1)
-        self.tab.addTab(self.tab_widget_1, 'HARMONICO 2')
+        self.tab.addTab(self.tab_widget_1, 'Second Harmonic')
         self.tab_widget_2 = Qt.QWidget()
         self.tab_layout_2 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_2)
         self.tab_grid_layout_2 = Qt.QGridLayout()
         self.tab_layout_2.addLayout(self.tab_grid_layout_2)
-        self.tab.addTab(self.tab_widget_2, 'HARMONICO 3')
+        self.tab.addTab(self.tab_widget_2, 'Third Harmonic')
+        self.tab_widget_3 = Qt.QWidget()
+        self.tab_layout_3 = Qt.QBoxLayout(Qt.QBoxLayout.TopToBottom, self.tab_widget_3)
+        self.tab_grid_layout_3 = Qt.QGridLayout()
+        self.tab_layout_3.addLayout(self.tab_grid_layout_3)
+        self.tab.addTab(self.tab_widget_3, 'Signal Demodulated')
         self.top_layout.addWidget(self.tab)
         self._f_lo_tool_bar = Qt.QToolBar(self)
         self._f_lo_tool_bar.addWidget(Qt.QLabel("Frequency Local Oscillator" + ": "))
@@ -107,13 +113,61 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self._df_range = qtgui.Range(0, 10000, 1, freq, 200)
         self._df_win = qtgui.RangeWidget(self._df_range, self.set_df, "Frequency Deviation", "eng", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._df_win)
-        self._amp_range = qtgui.Range(0, 1, .1, 0, 20)
+        self._amp_range = qtgui.Range(0, 1, .1, 1, 20)
         self._amp_win = qtgui.RangeWidget(self._amp_range, self.set_amp, "Amplitude", "counter_slider", float, QtCore.Qt.Horizontal)
         self.top_grid_layout.addWidget(self._amp_win, 0, 0, 1, 1)
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
+        self.qtgui_time_sink_x_0_0_0_0_0 = qtgui.time_sink_f(
+            (round(samp_rate/freq)*10), #size
+            samp_rate, #samp_rate
+            "", #name
+            2, #number of inputs
+            None # parent
+        )
+        self.qtgui_time_sink_x_0_0_0_0_0.set_update_time(0.10)
+        self.qtgui_time_sink_x_0_0_0_0_0.set_y_axis(-1, 1)
+
+        self.qtgui_time_sink_x_0_0_0_0_0.set_y_label('Amplitude', "")
+
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_tags(True)
+        self.qtgui_time_sink_x_0_0_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, qtgui.TRIG_SLOPE_POS, 0.0, 0, 0, "")
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_autoscale(False)
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_grid(False)
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_axis_labels(True)
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_control_panel(True)
+        self.qtgui_time_sink_x_0_0_0_0_0.enable_stem_plot(False)
+
+
+        labels = ['Original', 'Demodulado', 'Signal 3', 'Signal 4', 'Signal 5',
+            'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ['blue', 'red', 'green', 'black', 'cyan',
+            'magenta', 'yellow', 'dark red', 'dark green', 'dark blue']
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+        styles = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        markers = [-1, -1, -1, -1, -1,
+            -1, -1, -1, -1, -1]
+
+
+        for i in range(2):
+            if len(labels[i]) == 0:
+                self.qtgui_time_sink_x_0_0_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_time_sink_x_0_0_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_time_sink_x_0_0_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_time_sink_x_0_0_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_time_sink_x_0_0_0_0_0.set_line_style(i, styles[i])
+            self.qtgui_time_sink_x_0_0_0_0_0.set_line_marker(i, markers[i])
+            self.qtgui_time_sink_x_0_0_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_time_sink_x_0_0_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0_0_0.qwidget(), Qt.QWidget)
+        self.tab_layout_3.addWidget(self._qtgui_time_sink_x_0_0_0_0_0_win)
         self.qtgui_time_sink_x_0_0_0_0 = qtgui.time_sink_f(
             (round(samp_rate/freq)), #size
             samp_rate, #samp_rate
@@ -135,7 +189,7 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0_0_0_0.enable_stem_plot(False)
 
 
-        labels = ['Original', 'Modulado Indiretamente', 'Signal 3', 'Signal 4', 'Signal 5',
+        labels = ['Original', 'Indireto', 'Signal 3', 'Signal 4', 'Signal 5',
             'Signal 6', 'Signal 7', 'Signal 8', 'Signal 9', 'Signal 10']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -258,6 +312,49 @@ class Armstrong(gr.top_block, Qt.QWidget):
 
         self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.qwidget(), Qt.QWidget)
         self.tab_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win)
+        self.qtgui_freq_sink_x_0_0_0_0_0 = qtgui.freq_sink_f(
+            1024, #size
+            window.WIN_BLACKMAN_hARRIS, #wintype
+            0, #fc
+            samp_rate, #bw
+            "", #name
+            2,
+            None # parent
+        )
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_update_time(0.10)
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_y_axis((-140), 10)
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_y_label('Relative Gain', 'dB')
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
+        self.qtgui_freq_sink_x_0_0_0_0_0.enable_autoscale(False)
+        self.qtgui_freq_sink_x_0_0_0_0_0.enable_grid(False)
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_fft_average(1.0)
+        self.qtgui_freq_sink_x_0_0_0_0_0.enable_axis_labels(True)
+        self.qtgui_freq_sink_x_0_0_0_0_0.enable_control_panel(True)
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_fft_window_normalized(False)
+
+
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_plot_pos_half(not True)
+
+        labels = ['Original', 'Demodulado', '', '', '',
+            '', '', '', '', '']
+        widths = [1, 1, 1, 1, 1,
+            1, 1, 1, 1, 1]
+        colors = ["blue", "red", "green", "black", "cyan",
+            "magenta", "yellow", "dark red", "dark green", "dark blue"]
+        alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
+            1.0, 1.0, 1.0, 1.0, 1.0]
+
+        for i in range(2):
+            if len(labels[i]) == 0:
+                self.qtgui_freq_sink_x_0_0_0_0_0.set_line_label(i, "Data {0}".format(i))
+            else:
+                self.qtgui_freq_sink_x_0_0_0_0_0.set_line_label(i, labels[i])
+            self.qtgui_freq_sink_x_0_0_0_0_0.set_line_width(i, widths[i])
+            self.qtgui_freq_sink_x_0_0_0_0_0.set_line_color(i, colors[i])
+            self.qtgui_freq_sink_x_0_0_0_0_0.set_line_alpha(i, alphas[i])
+
+        self._qtgui_freq_sink_x_0_0_0_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0_0_0_0.qwidget(), Qt.QWidget)
+        self.tab_layout_3.addWidget(self._qtgui_freq_sink_x_0_0_0_0_0_win)
         self.qtgui_freq_sink_x_0_0_0_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -281,7 +378,7 @@ class Armstrong(gr.top_block, Qt.QWidget):
 
         self.qtgui_freq_sink_x_0_0_0_0.set_plot_pos_half(not True)
 
-        labels = ['Original', 'Harmonico', '', '', '',
+        labels = ['Original', 'Indireto', '', '', '',
             '', '', '', '', '']
         widths = [1, 1, 1, 1, 1,
             1, 1, 1, 1, 1]
@@ -387,6 +484,8 @@ class Armstrong(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0.qwidget(), Qt.QWidget)
         self.tab_layout_1.addWidget(self._qtgui_freq_sink_x_0_0_win)
+        self.fir_filter_xxx_1 = filter.fir_filter_fcc(1, [1])
+        self.fir_filter_xxx_1.declare_sample_delay(0)
         self.dc_blocker_xx_0_0 = filter.dc_blocker_ff(32, True)
         self.dc_blocker_xx_0 = filter.dc_blocker_ff(32, True)
         self.blocks_throttle2_0_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
@@ -397,6 +496,27 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.blocks_multiply_xx_0_0 = blocks.multiply_vff(1)
         self.blocks_multiply_xx_0 = blocks.multiply_vff(1)
         self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(2)
+        self.blocks_complex_to_float_0 = blocks.complex_to_float(1)
+        self.band_pass_filter_1 = filter.fir_filter_ccf(
+            1,
+            firdes.band_pass(
+                (samp_rate/freq),
+                samp_rate,
+                (df - freq/100),
+                (df + freq/100),
+                (df/10),
+                window.WIN_HAMMING,
+                6.76))
+        self.band_pass_filter_0_1 = filter.fir_filter_fff(
+            1,
+            firdes.band_pass(
+                2,
+                samp_rate,
+                (3*f_c-df-f_lo),
+                (3*f_c+df-f_lo),
+                (df/10),
+                window.WIN_RECTANGULAR,
+                6.76))
         self.band_pass_filter_0 = filter.fir_filter_fff(
             1,
             firdes.band_pass(
@@ -411,22 +531,30 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.analog_sig_source_x_0_1 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, freq, amp, 0, 0)
         self.analog_sig_source_x_0_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, f_c, 1, 0, 0)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, f_c, 1, 0, 0)
+        self.analog_pll_carriertracking_cc_0 = analog.pll_carriertracking_cc((2 * np.pi * df /samp_rate*2), (2* np.pi *(f_c+df)/samp_rate), (2* np.pi *(f_c-df)/samp_rate))
 
 
         ##################################################
         # Connections
         ##################################################
+        self.connect((self.analog_pll_carriertracking_cc_0, 0), (self.band_pass_filter_1, 0))
         self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 1))
         self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_sub_xx_0, 0))
         self.connect((self.analog_sig_source_x_0_1, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.analog_sig_source_x_0_1, 0), (self.qtgui_freq_sink_x_0_0_0_0_0, 0))
+        self.connect((self.analog_sig_source_x_0_1, 0), (self.qtgui_time_sink_x_0_0_0_0_0, 0))
         self.connect((self.analog_sig_source_x_1, 0), (self.blocks_multiply_xx_1, 1))
         self.connect((self.band_pass_filter_0, 0), (self.dc_blocker_xx_0_0, 0))
+        self.connect((self.band_pass_filter_0_1, 0), (self.qtgui_freq_sink_x_0_0_0_0, 1))
+        self.connect((self.band_pass_filter_0_1, 0), (self.qtgui_time_sink_x_0_0_0_0, 1))
+        self.connect((self.band_pass_filter_1, 0), (self.blocks_complex_to_float_0, 0))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.qtgui_freq_sink_x_0_0_0_0_0, 1))
+        self.connect((self.blocks_complex_to_float_0, 0), (self.qtgui_time_sink_x_0_0_0_0_0, 1))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.dc_blocker_xx_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_sub_xx_0, 1))
         self.connect((self.blocks_multiply_xx_0_0, 0), (self.blocks_throttle2_0, 0))
         self.connect((self.blocks_multiply_xx_0_0_0, 0), (self.blocks_throttle2_0_0, 0))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.qtgui_freq_sink_x_0_0_0_0, 1))
-        self.connect((self.blocks_multiply_xx_1, 0), (self.qtgui_time_sink_x_0_0_0_0, 1))
+        self.connect((self.blocks_multiply_xx_1, 0), (self.band_pass_filter_0_1, 0))
         self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_xx_0_0, 1))
         self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_xx_0_0, 0))
         self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_xx_0_0_0, 0))
@@ -442,8 +570,10 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.connect((self.dc_blocker_xx_0, 0), (self.qtgui_freq_sink_x_0_0, 1))
         self.connect((self.dc_blocker_xx_0, 0), (self.qtgui_time_sink_x_0_0, 1))
         self.connect((self.dc_blocker_xx_0_0, 0), (self.blocks_multiply_xx_1, 0))
+        self.connect((self.dc_blocker_xx_0_0, 0), (self.fir_filter_xxx_1, 0))
         self.connect((self.dc_blocker_xx_0_0, 0), (self.qtgui_freq_sink_x_0_0_0, 1))
         self.connect((self.dc_blocker_xx_0_0, 0), (self.qtgui_time_sink_x_0_0_0, 1))
+        self.connect((self.fir_filter_xxx_1, 0), (self.analog_pll_carriertracking_cc_0, 0))
 
 
     def closeEvent(self, event):
@@ -461,25 +591,33 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.freq = freq
         self.set_df(self.freq)
         self.analog_sig_source_x_0_1.set_frequency(self.freq)
+        self.band_pass_filter_1.set_taps(firdes.band_pass((self.samp_rate/self.freq), self.samp_rate, (self.df - self.freq/100), (self.df + self.freq/100), (self.df/10), window.WIN_HAMMING, 6.76))
 
     def get_samp_rate(self):
         return self.samp_rate
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.analog_pll_carriertracking_cc_0.set_loop_bandwidth((2 * np.pi * self.df /self.samp_rate*2))
+        self.analog_pll_carriertracking_cc_0.set_max_freq((2* np.pi *(self.f_c+self.df)/self.samp_rate))
+        self.analog_pll_carriertracking_cc_0.set_min_freq((2* np.pi *(self.f_c-self.df)/self.samp_rate))
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_0_0.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_0_1.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
         self.band_pass_filter_0.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df), (3*self.f_c+self.df), (self.df/10), window.WIN_RECTANGULAR, 6.76))
+        self.band_pass_filter_0_1.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df-self.f_lo), (3*self.f_c+self.df-self.f_lo), (self.df/10), window.WIN_RECTANGULAR, 6.76))
+        self.band_pass_filter_1.set_taps(firdes.band_pass((self.samp_rate/self.freq), self.samp_rate, (self.df - self.freq/100), (self.df + self.freq/100), (self.df/10), window.WIN_HAMMING, 6.76))
         self.blocks_throttle2_0.set_sample_rate(self.samp_rate)
         self.blocks_throttle2_0_0.set_sample_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_freq_sink_x_0_0_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_freq_sink_x_0_0_0_0.set_frequency_range(0, self.samp_rate)
+        self.qtgui_freq_sink_x_0_0_0_0_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_0_0_0.set_samp_rate(self.samp_rate)
+        self.qtgui_time_sink_x_0_0_0_0_0.set_samp_rate(self.samp_rate)
 
     def get_f_lo(self):
         return self.f_lo
@@ -488,22 +626,31 @@ class Armstrong(gr.top_block, Qt.QWidget):
         self.f_lo = f_lo
         Qt.QMetaObject.invokeMethod(self._f_lo_line_edit, "setText", Qt.Q_ARG("QString", str(self.f_lo)))
         self.analog_sig_source_x_1.set_frequency(self.f_lo)
+        self.band_pass_filter_0_1.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df-self.f_lo), (3*self.f_c+self.df-self.f_lo), (self.df/10), window.WIN_RECTANGULAR, 6.76))
 
     def get_f_c(self):
         return self.f_c
 
     def set_f_c(self, f_c):
         self.f_c = f_c
+        self.analog_pll_carriertracking_cc_0.set_max_freq((2* np.pi *(self.f_c+self.df)/self.samp_rate))
+        self.analog_pll_carriertracking_cc_0.set_min_freq((2* np.pi *(self.f_c-self.df)/self.samp_rate))
         self.analog_sig_source_x_0.set_frequency(self.f_c)
         self.analog_sig_source_x_0_0.set_frequency(self.f_c)
         self.band_pass_filter_0.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df), (3*self.f_c+self.df), (self.df/10), window.WIN_RECTANGULAR, 6.76))
+        self.band_pass_filter_0_1.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df-self.f_lo), (3*self.f_c+self.df-self.f_lo), (self.df/10), window.WIN_RECTANGULAR, 6.76))
 
     def get_df(self):
         return self.df
 
     def set_df(self, df):
         self.df = df
+        self.analog_pll_carriertracking_cc_0.set_loop_bandwidth((2 * np.pi * self.df /self.samp_rate*2))
+        self.analog_pll_carriertracking_cc_0.set_max_freq((2* np.pi *(self.f_c+self.df)/self.samp_rate))
+        self.analog_pll_carriertracking_cc_0.set_min_freq((2* np.pi *(self.f_c-self.df)/self.samp_rate))
         self.band_pass_filter_0.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df), (3*self.f_c+self.df), (self.df/10), window.WIN_RECTANGULAR, 6.76))
+        self.band_pass_filter_0_1.set_taps(firdes.band_pass(2, self.samp_rate, (3*self.f_c-self.df-self.f_lo), (3*self.f_c+self.df-self.f_lo), (self.df/10), window.WIN_RECTANGULAR, 6.76))
+        self.band_pass_filter_1.set_taps(firdes.band_pass((self.samp_rate/self.freq), self.samp_rate, (self.df - self.freq/100), (self.df + self.freq/100), (self.df/10), window.WIN_HAMMING, 6.76))
 
     def get_amp(self):
         return self.amp

@@ -46,7 +46,7 @@ blocks:
     step: '.1'
     stop: '1'
     value: '1'
-    widget: counter_slider
+    widget: dial
   states:
     bus_sink: false
     bus_source: false
@@ -79,7 +79,7 @@ blocks:
     step: '1'
     stop: '10000'
     value: '1000'
-    widget: counter_slider
+    widget: dial
   states:
     bus_sink: false
     bus_source: false
@@ -412,7 +412,7 @@ blocks:
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
-    gui_hint: tab@0
+    gui_hint: 'tab@0: 0,1'
     label: Relative Gain
     label1: Original
     label10: ''''''
@@ -493,7 +493,7 @@ blocks:
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
-    gui_hint: tab@1
+    gui_hint: 'tab@1: 0,1'
     label: Relative Gain
     label1: Original
     label10: ''''''
@@ -574,7 +574,7 @@ blocks:
     fftsize: '1024'
     freqhalf: 'True'
     grid: 'False'
-    gui_hint: tab@2
+    gui_hint: 'tab@2: 0,1'
     label: Relative Gain
     label1: Original
     label10: ''''''
@@ -651,7 +651,7 @@ blocks:
     ctrlpanel: 'False'
     entags: 'True'
     grid: 'False'
-    gui_hint: tab@0
+    gui_hint: 'tab@0: 0,0'
     label1: Original
     label10: Signal 10
     label2: Harmonico
@@ -675,7 +675,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '2'
-    size: '1024'
+    size: round(samp_rate/freq*2)
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -748,7 +748,7 @@ blocks:
     ctrlpanel: 'False'
     entags: 'True'
     grid: 'False'
-    gui_hint: tab@1
+    gui_hint: 'tab@1: 0,0'
     label1: Original
     label10: Signal 10
     label2: Harmonico
@@ -772,7 +772,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '2'
-    size: '1024'
+    size: round(samp_rate/freq*2)
     srate: samp_rate
     stemplot: 'False'
     style1: '1'
@@ -845,7 +845,7 @@ blocks:
     ctrlpanel: 'False'
     entags: 'True'
     grid: 'False'
-    gui_hint: tab@2
+    gui_hint: 'tab@2: 0,0'
     label1: Original
     label10: Signal 10
     label2: Harmonico
@@ -869,7 +869,7 @@ blocks:
     marker9: '-1'
     name: '""'
     nconnections: '2'
-    size: '1024'
+    size: round(samp_rate/freq*2)
     srate: samp_rate
     stemplot: 'False'
     style1: '1'

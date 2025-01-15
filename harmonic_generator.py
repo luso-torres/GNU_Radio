@@ -90,21 +90,21 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
         self.tab.addTab(self.tab_widget_2, '4 Harmonico')
         self.top_layout.addWidget(self.tab)
         self._freq_range = qtgui.Range(0, 10000, 1, 1000, 200)
-        self._freq_win = qtgui.RangeWidget(self._freq_range, self.set_freq, "Frequência", "counter_slider", float, QtCore.Qt.Horizontal)
+        self._freq_win = qtgui.RangeWidget(self._freq_range, self.set_freq, "Frequência", "dial", float, QtCore.Qt.Horizontal)
         self.top_grid_layout.addWidget(self._freq_win, 0, 0, 1, 1)
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
             self.top_grid_layout.setColumnStretch(c, 1)
         self._amp_range = qtgui.Range(0.1, 1, .1, 1, 10)
-        self._amp_win = qtgui.RangeWidget(self._amp_range, self.set_amp, "Amplitude", "counter_slider", float, QtCore.Qt.Horizontal)
+        self._amp_win = qtgui.RangeWidget(self._amp_range, self.set_amp, "Amplitude", "dial", float, QtCore.Qt.Horizontal)
         self.top_grid_layout.addWidget(self._amp_win, 0, 1, 1, 1)
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(1, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0_0_0 = qtgui.time_sink_f(
-            1024, #size
+            (round(samp_rate/freq*2)), #size
             samp_rate, #samp_rate
             "", #name
             2, #number of inputs
@@ -150,9 +150,13 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0_0.qwidget(), Qt.QWidget)
-        self.tab_layout_2.addWidget(self._qtgui_time_sink_x_0_0_0_win)
+        self.tab_grid_layout_2.addWidget(self._qtgui_time_sink_x_0_0_0_win, 0, 0, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_2.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.tab_grid_layout_2.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0_0 = qtgui.time_sink_f(
-            1024, #size
+            (round(samp_rate/freq*2)), #size
             samp_rate, #samp_rate
             "", #name
             2, #number of inputs
@@ -198,9 +202,13 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0_0.qwidget(), Qt.QWidget)
-        self.tab_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win)
+        self.tab_grid_layout_1.addWidget(self._qtgui_time_sink_x_0_0_win, 0, 0, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_1.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.tab_grid_layout_1.setColumnStretch(c, 1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
-            1024, #size
+            (round(samp_rate/freq*2)), #size
             samp_rate, #samp_rate
             "", #name
             2, #number of inputs
@@ -246,7 +254,11 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_time_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_time_sink_x_0_win = sip.wrapinstance(self.qtgui_time_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab_layout_0.addWidget(self._qtgui_time_sink_x_0_win)
+        self.tab_grid_layout_0.addWidget(self._qtgui_time_sink_x_0_win, 0, 0, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_0.setRowStretch(r, 1)
+        for c in range(0, 1):
+            self.tab_grid_layout_0.setColumnStretch(c, 1)
         self.qtgui_freq_sink_x_0_0_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -289,7 +301,11 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0_0.qwidget(), Qt.QWidget)
-        self.tab_layout_2.addWidget(self._qtgui_freq_sink_x_0_0_0_win)
+        self.tab_grid_layout_2.addWidget(self._qtgui_freq_sink_x_0_0_0_win, 0, 1, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_2.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.tab_grid_layout_2.setColumnStretch(c, 1)
         self.qtgui_freq_sink_x_0_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -332,7 +348,11 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0_0.qwidget(), Qt.QWidget)
-        self.tab_layout_1.addWidget(self._qtgui_freq_sink_x_0_0_win)
+        self.tab_grid_layout_1.addWidget(self._qtgui_freq_sink_x_0_0_win, 0, 1, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_1.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.tab_grid_layout_1.setColumnStretch(c, 1)
         self.qtgui_freq_sink_x_0 = qtgui.freq_sink_f(
             1024, #size
             window.WIN_BLACKMAN_hARRIS, #wintype
@@ -375,7 +395,11 @@ class harmonic_generator(gr.top_block, Qt.QWidget):
             self.qtgui_freq_sink_x_0.set_line_alpha(i, alphas[i])
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
-        self.tab_layout_0.addWidget(self._qtgui_freq_sink_x_0_win)
+        self.tab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 0, 1, 1, 1)
+        for r in range(0, 1):
+            self.tab_grid_layout_0.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.tab_grid_layout_0.setColumnStretch(c, 1)
         self.blocks_throttle_0_0_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
         self.blocks_throttle_0_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
         self.blocks_throttle_0 = blocks.throttle(gr.sizeof_float*1, samp_rate,True)
