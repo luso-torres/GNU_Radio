@@ -4,9 +4,18 @@ This repository is dedicated to introduce what is GNU Radio and how it can help 
 
 The content is divided in:
 
-* 1 - Basic concepts of the program
-* 2 - Introduction to AM (Amplitude Modulation)
-* 3 - Applications on AM modulation (DSB-SC and DSB-FC)
-* 4 - What is the Gibbs Effect and its effect on bandwidth.
-* 5 - Applications on PM/FM modulation (direct and indirect methods)
-* 6 - Intermediate modules such as demodulators, discriminators, envelope detectors and more
+## 1 - Basics
+Basic concepts of the program such as visualizing plots, converting py documents in grc etc.
+## 2 - Introduction to AM (Amplitude Modulation)
+## 3 - Applications on AM modulation
+
+### DSB-SC
+### DSB-FC
+
+## 4 - Demodulation of AM signals
+
+## 5 - Gibbs Effect
+## 6 - Applications on PM/FM modulation 
+### Direct method
+### Indirect method)
+## 7 - Demodulation such as demodulators, discriminators, envelope detectors and more
