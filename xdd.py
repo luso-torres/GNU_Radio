@@ -11,11 +11,13 @@
 
 from PyQt5 import Qt
 from gnuradio import qtgui
+from PyQt5 import QtCore
 from gnuradio import audio
 from gnuradio import blocks
 import pmt
-from gnuradio import gr
+from gnuradio import filter
 from gnuradio.filter import firdes
+from gnuradio import gr
 from gnuradio.fft import window
 import sys
 import signal
@@ -63,12 +65,16 @@ class xdd(gr.top_block, Qt.QWidget):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 44100
+        self.samp_rate = samp_rate = 48000
+        self.Volume = Volume = 0.01
 
         ##################################################
         # Blocks
         ##################################################
 
+        self._Volume_range = qtgui.Range(0, 1, 0.01, 0.01, 200)
+        self._Volume_win = qtgui.RangeWidget(self._Volume_range, self.set_Volume, "Volume", "dial", float, QtCore.Qt.Horizontal)
+        self.top_layout.addWidget(self._Volume_win)
         self.qtgui_time_sink_x_1 = qtgui.time_sink_f(
             1024, #size
             samp_rate, #samp_rate
@@ -160,8 +166,10 @@ class xdd(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
-        self.epy_block_0_0 = epy_block_0_0.ulaw_decoder(mu=255)
-        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, 'D:\\Downloads\\aibecam.mp3', True, 0, 0)
+        self.filter_fft_low_pass_filter_0 = filter.fft_filter_fff(1, firdes.low_pass(1, samp_rate, 5000, 100, window.WIN_HAMMING, 6.76), 1)
+        self.epy_block_0_0 = epy_block_0_0.ulaw_decoder(mu=1)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(Volume)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, 'C:\\Users\\luso\\Desktop\\GNU_Radio\\audio_converter\\output.wav', True, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.audio_sink_0 = audio.sink(samp_rate, '', True)
 
@@ -169,12 +177,14 @@ class xdd(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.blocks_file_source_0, 0), (self.audio_sink_0, 0))
         self.connect((self.blocks_file_source_0, 0), (self.epy_block_0_0, 0))
         self.connect((self.blocks_file_source_0, 0), (self.qtgui_freq_sink_x_0, 0))
-        self.connect((self.blocks_file_source_0, 0), (self.qtgui_time_sink_x_1, 0))
-        self.connect((self.epy_block_0_0, 0), (self.qtgui_freq_sink_x_0, 1))
-        self.connect((self.epy_block_0_0, 0), (self.qtgui_time_sink_x_1, 1))
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.filter_fft_low_pass_filter_0, 0))
+        self.connect((self.epy_block_0_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.audio_sink_0, 0))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 1))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.qtgui_time_sink_x_1, 0))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.qtgui_time_sink_x_1, 1))
 
 
     def closeEvent(self, event):
@@ -190,8 +200,16 @@ class xdd(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+        self.filter_fft_low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 5000, 100, window.WIN_HAMMING, 6.76))
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_1.set_samp_rate(self.samp_rate)
+
+    def get_Volume(self):
+        return self.Volume
+
+    def set_Volume(self, Volume):
+        self.Volume = Volume
+        self.blocks_multiply_const_vxx_0.set_k(self.Volume)
 
 
 

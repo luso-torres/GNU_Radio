@@ -33,11 +33,32 @@ options:
     state: enabled
 
 blocks:
+- name: Volume
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Volume
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '0.01'
+    stop: '1'
+    value: '0.01'
+    widget: dial
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 404.0]
+    rotation: 0
+    state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '44100'
+    value: '48000'
   states:
     bus_sink: false
     bus_source: false
@@ -69,7 +90,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-    file: D:\Downloads\aibecam.mp3
+    file: C:\Users\luso\Desktop\GNU_Radio\audio_converter\output.wav
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -81,35 +102,94 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [104, 420.0]
+    coordinate: [48, 412.0]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: Volume
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [648, 600.0]
     rotation: 0
     state: enabled
 - name: epy_block_0_0
   id: epy_block
   parameters:
-    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nclass ulaw_decoder(gr.sync_block):\
-      \  # other base classes are basic_block, decim_block, interp_block\n    def\
-      \ __init__(self, mu=255):  # only default arguments here\n        gr.sync_block.__init__(\n\
-      \            self,\n            name='u-law Decoder',   # will show up in GRC\n\
-      \            in_sig=[np.float32],\n            out_sig=[np.float32]\n      \
-      \  )\n        self.mu = mu\n\n    def work(self, input_items, output_items):\n\
-      \        # Ensure input_items is properly indexed\n        c0 = np.sign(input_items[0])\
-      \ * (1/self.mu) * ((1 + self.mu)**np.abs(input_items[0]) - 1)\n        output_items[0][:]\
-      \ = c0\n\n        # Return the length of the output items produced\n       \
-      \ return len(output_items[0])\n"
+    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nclass ulaw_decoder(gr.sync_block):\n\
+      \    def __init__(self, mu=255):\n        gr.sync_block.__init__(\n        \
+      \    self,\n            name='u-law Decoder',\n            in_sig=[np.float32],\n\
+      \            out_sig=[np.float32]\n        )\n        self.mu = mu\n\n    def\
+      \ ulaw_decode(self, x):\n        # Ensure x is within the valid range and handle\
+      \ NaN and Inf values\n        x = np.nan_to_num(x, nan=0.0, posinf=1.0, neginf=-1.0)\
+      \  # Replace NaN and Inf values\n        x = np.clip(x, -1.0, 1.0)  # Ensure\
+      \ values are within the range [-1, 1]\n\n        # Perform u-law decoding\n\
+      \        decoded = np.sign(x) * (1 / self.mu) * ((1 + self.mu) ** np.abs(x)\
+      \ - 1)\n        decoded = np.nan_to_num(decoded, nan=0.0, posinf=1.0, neginf=-1.0)\
+      \  # Replace NaN and Inf values again\n        return decoded\n\n    def normalize_audio(self,\
+      \ audio):\n        max_val = np.max(np.abs(audio))\n        if np.isfinite(max_val)\
+      \ and max_val > 0:\n            normalized_audio = audio / max_val\n       \
+      \     print(\"Normalization factor:\", max_val)\n            return normalized_audio\n\
+      \        print(\"Invalid normalization factor:\", max_val)\n        return audio\n\
+      \n    def work(self, input_items, output_items):\n        # Apply u-law decoding\n\
+      \        decoded_signal = self.ulaw_decode(input_items[0])\n\n        # Debug\
+      \ prints to check signal values before normalization\n        print(\"Decoded\
+      \ Min:\", np.min(decoded_signal), \"Decoded Max:\", np.max(decoded_signal))\n\
+      \n        # Normalize the decoded signal\n        normalized_signal = self.normalize_audio(decoded_signal)\n\
+      \n        # Debug prints to check signal values after normalization\n      \
+      \  print(\"Normalized Min:\", np.min(normalized_signal), \"Normalized Max:\"\
+      , np.max(normalized_signal))\n\n        # Clip the values to avoid overflow\n\
+      \        output_items[0][:] = np.clip(normalized_signal, -1.0, 1.0)\n\n    \
+      \    # Debug prints to check final signal values\n        print(\"Output Min:\"\
+      , np.min(output_items[0]), \"Output Max:\", np.max(output_items[0]))\n\n   \
+      \     return len(output_items[0])\n"
     affinity: ''
     alias: ''
     comment: ''
     maxoutbuf: '0'
     minoutbuf: '0'
-    mu: '255'
+    mu: '1'
   states:
     _io_cache: ('u-law Decoder', 'ulaw_decoder', [('mu', '255')], [('0', 'float',
       1)], [('0', 'float', 1)], '', ['mu'])
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [640, 656.0]
+    coordinate: [392, 608.0]
+    rotation: 0
+    state: enabled
+- name: filter_fft_low_pass_filter_0
+  id: filter_fft_low_pass_filter
+  parameters:
+    affinity: ''
+    alias: ''
+    beta: '6.76'
+    comment: ''
+    cutoff_freq: '5000'
+    decim: '1'
+    gain: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nthreads: '1'
+    samp_rate: samp_rate
+    type: fff
+    width: '100'
+    win: window.WIN_HAMMING
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 576.0]
     rotation: 0
     state: enabled
 - name: low_pass_filter_0
@@ -314,17 +394,30 @@ blocks:
     coordinate: [1208, 180.0]
     rotation: 0
     state: enabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: original
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 344.0]
+    rotation: 0
+    state: enabled
 - name: virtual_sink_0_0
   id: virtual_sink
   parameters:
     alias: ''
     comment: ''
-    stream_id: xdd
+    stream_id: PCM
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 648.0]
+    coordinate: [1288, 616.0]
     rotation: 0
     state: enabled
 - name: virtual_source_0
@@ -332,27 +425,69 @@ blocks:
   parameters:
     alias: ''
     comment: ''
-    stream_id: xdd
+    stream_id: PCM
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1032, 440.0]
+    coordinate: [920, 512.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: PCM
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [944, 288.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: original
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [912, 416.0]
+    rotation: 0
+    state: enabled
+- name: virtual_source_1_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: PCM
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 192.0]
     rotation: 0
     state: enabled
 
 connections:
-- [blocks_file_source_0, '0', audio_sink_0, '0']
 - [blocks_file_source_0, '0', epy_block_0_0, '0']
 - [blocks_file_source_0, '0', low_pass_filter_0, '0']
-- [blocks_file_source_0, '0', qtgui_freq_sink_x_0, '0']
-- [blocks_file_source_0, '0', qtgui_time_sink_x_1, '0']
-- [epy_block_0_0, '0', virtual_sink_0_0, '0']
+- [blocks_file_source_0, '0', virtual_sink_0, '0']
+- [blocks_multiply_const_vxx_0, '0', filter_fft_low_pass_filter_0, '0']
+- [epy_block_0_0, '0', blocks_multiply_const_vxx_0, '0']
+- [filter_fft_low_pass_filter_0, '0', virtual_sink_0_0, '0']
 - [low_pass_filter_0, '0', audio_sink_0, '0']
 - [low_pass_filter_0, '0', qtgui_freq_sink_x_0, '0']
 - [low_pass_filter_0, '0', qtgui_time_sink_x_1, '0']
 - [virtual_source_0, '0', qtgui_freq_sink_x_0, '1']
-- [virtual_source_0, '0', qtgui_time_sink_x_1, '1']
+- [virtual_source_0_0, '0', qtgui_time_sink_x_1, '1']
+- [virtual_source_1, '0', qtgui_freq_sink_x_0, '0']
+- [virtual_source_1_0, '0', audio_sink_0, '0']
+- [virtual_source_1_0, '0', qtgui_time_sink_x_1, '0']
 
 metadata:
   file_format: 1
