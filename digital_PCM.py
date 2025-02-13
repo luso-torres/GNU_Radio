@@ -93,7 +93,7 @@ class digital_PCM(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_1.enable_autoscale(False)
         self.qtgui_time_sink_x_1.enable_grid(False)
         self.qtgui_time_sink_x_1.enable_axis_labels(True)
-        self.qtgui_time_sink_x_1.enable_control_panel(False)
+        self.qtgui_time_sink_x_1.enable_control_panel(True)
         self.qtgui_time_sink_x_1.enable_stem_plot(False)
 
 
@@ -141,7 +141,7 @@ class digital_PCM(gr.top_block, Qt.QWidget):
         self.qtgui_freq_sink_x_0.enable_grid(False)
         self.qtgui_freq_sink_x_0.set_fft_average(1.0)
         self.qtgui_freq_sink_x_0.enable_axis_labels(True)
-        self.qtgui_freq_sink_x_0.enable_control_panel(False)
+        self.qtgui_freq_sink_x_0.enable_control_panel(True)
         self.qtgui_freq_sink_x_0.set_fft_window_normalized(False)
 
 
@@ -172,14 +172,14 @@ class digital_PCM(gr.top_block, Qt.QWidget):
             firdes.low_pass(
                 1,
                 samp_rate,
-                22000,
+                7000,
                 300,
                 window.WIN_HAMMING,
                 6.76))
         self.epy_block_0_0 = epy_block_0_0.ulaw_decoder(mu=255)
         self.epy_block_0 = epy_block_0.blk(mu=255)
-        self.blocks_float_to_char_0 = blocks.float_to_char(1, 256)
-        self.blocks_char_to_float_0 = blocks.char_to_float(1, 256)
+        self.blocks_float_to_char_0 = blocks.float_to_char(1, 128)
+        self.blocks_char_to_float_0 = blocks.char_to_float(1, 128)
         self.blocks_add_xx_0 = blocks.add_vff(1)
         self.blocks_add_const_vxx_0 = blocks.add_const_ff(gain)
         self.audio_source_0 = audio.source(samp_rate, '', True)
@@ -200,9 +200,9 @@ class digital_PCM(gr.top_block, Qt.QWidget):
         self.connect((self.blocks_float_to_char_0, 0), (self.blocks_char_to_float_0, 0))
         self.connect((self.epy_block_0, 0), (self.blocks_float_to_char_0, 0))
         self.connect((self.epy_block_0_0, 0), (self.low_pass_filter_0, 0))
-        self.connect((self.epy_block_0_0, 0), (self.qtgui_freq_sink_x_0, 1))
-        self.connect((self.epy_block_0_0, 0), (self.qtgui_time_sink_x_1, 1))
         self.connect((self.low_pass_filter_0, 0), (self.blocks_add_const_vxx_0, 0))
+        self.connect((self.low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 1))
+        self.connect((self.low_pass_filter_0, 0), (self.qtgui_time_sink_x_1, 1))
 
 
     def closeEvent(self, event):
@@ -218,7 +218,7 @@ class digital_PCM(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 22000, 300, window.WIN_HAMMING, 6.76))
+        self.low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 7000, 300, window.WIN_HAMMING, 6.76))
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_1.set_samp_rate(self.samp_rate)
 

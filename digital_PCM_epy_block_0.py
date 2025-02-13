@@ -10,10 +10,10 @@ import numpy as np
 from gnuradio import gr
 
 class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
-    def __init__(self, mu=0.15):  # only default arguments here
+    def __init__(self, mu=255):  # only default arguments here
         gr.sync_block.__init__(
             self,
-            name='u-law Converter',   # will show up in GRC
+            name='u-law Compresser',   # will show up in GRC
             in_sig=[np.float32],
             out_sig=[np.float32]
         )

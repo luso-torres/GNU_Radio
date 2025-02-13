@@ -5,7 +5,7 @@ class ulaw_decoder(gr.sync_block):  # other base classes are basic_block, decim_
     def __init__(self, mu=255):  # only default arguments here
         gr.sync_block.__init__(
             self,
-            name='u-law Decoder',   # will show up in GRC
+            name='u-law Expander',   # will show up in GRC
             in_sig=[np.float32],
             out_sig=[np.float32]
         )
