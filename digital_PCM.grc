@@ -282,7 +282,7 @@ blocks:
     alias: ''
     beta: '6.76'
     comment: ''
-    cutoff_freq: '7000'
+    cutoff_freq: '10000'
     decim: '1'
     gain: '1'
     interp: '1'
