@@ -1,4 +1,4 @@
-# Welcome to the GNU_Radio Repository
+# Python and GNU Radio Interface
 
 This repository is dedicated to introduce what is GNU Radio and how it can help to create RF (Radio Frequency) projects and any SDR (Software Developed Radio) which are both important topics in Telecommunications/Electrical Engineering.
 
