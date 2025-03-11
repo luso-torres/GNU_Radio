@@ -7,6 +7,7 @@ The content is divided in:
 ## 1 - Basics
 Basic concepts of the program such as visualizing plots, converting py documents in grc etc.
 ## 2 - Introduction to AM (Amplitude Modulation)
+This Topic is dedicated for explaining the basic modules of the Modulator and the Demodulation
 ## 3 - Applications on AM modulation
 
 ### DSB-SC
