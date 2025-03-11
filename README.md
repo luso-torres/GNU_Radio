@@ -9,10 +9,11 @@ Basic concepts of the program such as visualizing plots, converting py documents
 ## 2 - Introduction to AM (Amplitude Modulation)
 This Topic is dedicated for explaining the basic modules of the Modulator and the Demodulation
 ## 3 - Applications on AM modulation
-
+Here, two codes were developed to show instances of
 ### DSB-SC
+In this modulation, the carrier is not presented on the transmitted signal.
 ### DSB-FC
-
+For this case, the modulation is used for sincronization of the signal. A envelope detector is usually applied to demodulate the signal.
 ## 4 - Demodulation of AM signals
 
 ## 5 - Gibbs Effect
