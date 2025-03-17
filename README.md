@@ -22,3 +22,5 @@ For this case, the modulation is used for sincronization of the signal. A envelo
 ### Indirect method)
 ## 7 - Demodulation such as demodulators, discriminators, envelope detectors and more
 
+## 8 - Pulse Code Modulation
+In this topic, the $\mu$-law and $A$-law compaders were implemented along with their respective RF chain. 
