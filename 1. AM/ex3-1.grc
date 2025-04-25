@@ -236,7 +236,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1128, 800.0]
+    coordinate: [1328, 696.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_xx_0
@@ -254,7 +254,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [584, 288.0]
+    coordinate: [704, 224.0]
     rotation: 0
     state: enabled
 - name: blocks_multiply_xx_0_0
@@ -291,7 +291,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [864, 328.0]
+    coordinate: [880, 232.0]
     rotation: 0
     state: enabled
 - name: dc_blocker_xx_0
@@ -358,7 +358,7 @@ blocks:
     comment: ''
     cutoff_freq: freq+freq/10
     decim: '1'
-    gain: '3'
+    gain: '4'
     interp: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -465,7 +465,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1248, 400.0]
+    coordinate: [1488, 416.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_0
@@ -562,7 +562,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1184, 232.0]
+    coordinate: [1360, 192.0]
     rotation: 0
     state: enabled
 - name: single_pole_iir_filter_xx_0

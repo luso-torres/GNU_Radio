@@ -64,6 +64,7 @@ class noise(gr.top_block, Qt.QWidget):
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 32000
+        self.amp_jammer = amp_jammer = 0.5
         self.amp = amp = 0.5
 
         ##################################################
@@ -87,6 +88,9 @@ class noise(gr.top_block, Qt.QWidget):
         self.tab_layout_2.addLayout(self.tab_grid_layout_2)
         self.tab.addTab(self.tab_widget_2, 'Jammer')
         self.top_layout.addWidget(self.tab)
+        self._amp_jammer_range = qtgui.Range(0, 1, .1, 0.5, 200)
+        self._amp_jammer_win = qtgui.RangeWidget(self._amp_jammer_range, self.set_amp_jammer, "'amp_jammer'", "dial", float, QtCore.Qt.Horizontal)
+        self.tab_layout_2.addWidget(self._amp_jammer_win)
         self._amp_range = qtgui.Range(0, 1, .1, 0.5, 200)
         self._amp_win = qtgui.RangeWidget(self._amp_range, self.set_amp, "'amp'", "dial", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._amp_win)
@@ -385,7 +389,7 @@ class noise(gr.top_block, Qt.QWidget):
                 100,
                 window.WIN_HAMMING,
                 6.76))
-        self.analog_sig_source_x_1 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0, np.pi)
+        self.analog_sig_source_x_1 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, amp_jammer, 0, np.pi)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, 1000, 1, 0, 0)
         self.analog_noise_source_x_0 = analog.noise_source_f(analog.GR_GAUSSIAN, amp, 0)
 
@@ -430,6 +434,13 @@ class noise(gr.top_block, Qt.QWidget):
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_0.set_samp_rate(self.samp_rate)
         self.qtgui_time_sink_x_0_0_0.set_samp_rate(self.samp_rate)
+
+    def get_amp_jammer(self):
+        return self.amp_jammer
+
+    def set_amp_jammer(self, amp_jammer):
+        self.amp_jammer = amp_jammer
+        self.analog_sig_source_x_1.set_amplitude(self.amp_jammer)
 
     def get_amp(self):
         return self.amp
