@@ -33,8 +33,6 @@ options:
     state: enabled
 
 blocks:
-<<<<<<< HEAD
-=======
 - name: Volume
   id: variable_qtgui_range
   parameters:
@@ -266,7 +264,6 @@ blocks:
     coordinate: [520, 16.0]
     rotation: 0
     state: enabled
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 - name: samp_rate
   id: variable
   parameters:
@@ -295,25 +292,7 @@ blocks:
     bus_structure: null
     coordinate: [1328, 304.0]
     rotation: 0
-    state: disabled
-- name: blocks_file_sink_0
-  id: blocks_file_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    append: 'False'
-    comment: ''
-    file: output.txt
-    type: float
-    unbuffered: 'False'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1312, 80.0]
-    rotation: 0
-    state: disabled
+    state: enabled
 - name: blocks_file_source_0
   id: blocks_file_source
   parameters:
@@ -321,11 +300,7 @@ blocks:
     alias: ''
     begin_tag: pmt.PMT_NIL
     comment: ''
-<<<<<<< HEAD
-    file: D:\SDR-GNU\GNU_Radio\audio_converter\output.wav
-=======
     file: E:\Repositorios\GNU_Radio\audio_converter\output.wav
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
     length: '0'
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -346,9 +321,6 @@ blocks:
     affinity: ''
     alias: ''
     comment: ''
-<<<<<<< HEAD
-    const: '1'
-=======
     const: -.1
     maxoutbuf: '0'
     minoutbuf: '0'
@@ -368,7 +340,6 @@ blocks:
     alias: ''
     comment: ''
     const: Volume
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
     maxoutbuf: '0'
     minoutbuf: '0'
     type: float
@@ -430,25 +401,6 @@ blocks:
     coordinate: [464, 720.0]
     rotation: 0
     state: enabled
-- name: blocks_throttle_0
-  id: blocks_throttle
-  parameters:
-    affinity: ''
-    alias: ''
-    comment: ''
-    ignoretag: 'True'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    samples_per_second: samp_rate
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [848, 504.0]
-    rotation: 0
-    state: disabled
 - name: epy_block_0_0
   id: epy_block
   parameters:
@@ -517,9 +469,6 @@ blocks:
     bus_structure: null
     coordinate: [896, 576.0]
     rotation: 0
-<<<<<<< HEAD
-    state: enabled
-=======
     state: disabled
 - name: low_pass_filter_0
   id: low_pass_filter
@@ -545,7 +494,6 @@ blocks:
     coordinate: [752, 800.0]
     rotation: 0
     state: disabled
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 - name: qtgui_freq_sink_x_0
   id: qtgui_freq_sink_x
   parameters:
@@ -597,7 +545,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
-    nconnections: '1'
+    nconnections: '2'
     norm_window: 'False'
     showports: 'False'
     tr_chan: '0'
@@ -624,7 +572,7 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 484.0]
+    coordinate: [1344, 476.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_1
@@ -681,7 +629,7 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '1'
+    nconnections: '2'
     size: '1024'
     srate: samp_rate
     stemplot: 'False'
@@ -773,8 +721,6 @@ blocks:
     coordinate: [1288, 616.0]
     rotation: 0
     state: enabled
-<<<<<<< HEAD
-=======
 - name: virtual_source_0
   id: virtual_source
   parameters:
@@ -814,7 +760,6 @@ blocks:
     coordinate: [912, 416.0]
     rotation: 0
     state: enabled
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 - name: virtual_source_1_0
   id: virtual_source
   parameters:
@@ -825,27 +770,15 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-<<<<<<< HEAD
-    coordinate: [776, 272.0]
-=======
     coordinate: [936, 192.0]
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
     rotation: 0
     state: enabled
 
 connections:
 - [blocks_file_source_0, '0', epy_block_0_0, '0']
+- [blocks_file_source_0, '0', low_pass_filter_0, '0']
 - [blocks_file_source_0, '0', virtual_sink_0, '0']
-- [blocks_multiply_const_vxx_0, '0', blocks_throttle_0, '0']
 - [blocks_multiply_const_vxx_0, '0', filter_fft_low_pass_filter_0, '0']
-<<<<<<< HEAD
-- [blocks_throttle_0, '0', filter_fft_low_pass_filter_0, '0']
-- [blocks_throttle_0, '0', virtual_sink_0_0, '0']
-- [epy_block_0_0, '0', blocks_multiply_const_vxx_0, '0']
-- [filter_fft_low_pass_filter_0, '0', virtual_sink_0_0, '0']
-- [virtual_source_1_0, '0', audio_sink_0, '0']
-- [virtual_source_1_0, '0', qtgui_freq_sink_x_0, '0']
-=======
 - [blocks_multiply_const_vxx_0, '0', virtual_sink_0_0, '0']
 - [blocks_multiply_const_vxx_0_0, '0', audio_sink_0, '0']
 - [epy_block_0, '0', blocks_multiply_const_vxx_0, '0']
@@ -860,9 +793,8 @@ connections:
 - [virtual_source_0_0, '0', qtgui_time_sink_x_1, '1']
 - [virtual_source_1, '0', qtgui_freq_sink_x_0, '0']
 - [virtual_source_1_0, '0', blocks_multiply_const_vxx_0_0, '0']
->>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 - [virtual_source_1_0, '0', qtgui_time_sink_x_1, '0']
 
 metadata:
   file_format: 1
-  grc_version: 3.10.11.0
+  grc_version: 3.10.10.0
