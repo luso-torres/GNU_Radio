@@ -32,7 +32,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         for i in range(len(input_items[0])):
             if self.mode == 1:
-                buf[i] = abs(input_items[0][i])
+                buf[i] = input_items[0][i]
             else:
                 if input_items[0][i] > self.threshold:
                     buf[i] = input_items[0][i]

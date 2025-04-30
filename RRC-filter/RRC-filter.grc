@@ -1,6 +1,6 @@
 options:
   parameters:
-    author: luso
+    author: ''
     catch_exceptions: 'True'
     category: '[GRC Hier Blocks]'
     cmake_opt: ''
@@ -11,7 +11,7 @@ options:
     gen_linking: dynamic
     generate_options: qt_gui
     hier_block_src_path: '.:'
-    id: xdd
+    id: untitled
     max_nouts: '0'
     output_language: python
     placement: (0,0)
@@ -33,11 +33,53 @@ options:
     state: enabled
 
 blocks:
+- name: alpha
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Alpha
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '0'
+    step: '.1'
+    stop: '1'
+    value: '.5'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [416, 24.0]
+    rotation: 0
+    state: enabled
+- name: delay
+  id: variable_qtgui_range
+  parameters:
+    comment: ''
+    gui_hint: ''
+    label: Delay
+    min_len: '200'
+    orient: QtCore.Qt.Horizontal
+    rangeType: float
+    start: '200'
+    step: '5'
+    stop: '300'
+    value: '256'
+    widget: counter_slider
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [616, 16.0]
+    rotation: 0
+    state: enabled
 - name: samp_rate
   id: variable
   parameters:
     comment: ''
-    value: '48000'
+    value: '1000000'
   states:
     bus_sink: false
     bus_source: false
@@ -45,79 +87,88 @@ blocks:
     coordinate: [200, 12]
     rotation: 0
     state: enabled
-- name: audio_sink_0
-  id: audio_sink
+- name: sps
+  id: variable
   parameters:
-    affinity: ''
-    alias: ''
     comment: ''
-    device_name: ''
-    num_inputs: '1'
-    ok_to_block: 'True'
-    samp_rate: samp_rate
+    value: '10'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1328, 304.0]
-    rotation: 0
-    state: disabled
-- name: blocks_file_sink_0
-  id: blocks_file_sink
-  parameters:
-    affinity: ''
-    alias: ''
-    append: 'False'
-    comment: ''
-    file: output.txt
-    type: float
-    unbuffered: 'False'
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1312, 80.0]
-    rotation: 0
-    state: disabled
-- name: blocks_file_source_0
-  id: blocks_file_source
-  parameters:
-    affinity: ''
-    alias: ''
-    begin_tag: pmt.PMT_NIL
-    comment: ''
-    file: D:\SDR-GNU\GNU_Radio\audio_converter\output.wav
-    length: '0'
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    offset: '0'
-    repeat: 'True'
-    type: float
-    vlen: '1'
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [48, 412.0]
+    coordinate: [312, 20.0]
     rotation: 0
     state: enabled
-- name: blocks_multiply_const_vxx_0
-  id: blocks_multiply_const_vxx
+- name: taps
+  id: variable
+  parameters:
+    comment: ''
+    value: '511'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [536, 388.0]
+    rotation: 0
+    state: enabled
+- name: blocks_delay_0
+  id: blocks_delay
   parameters:
     affinity: ''
     alias: ''
     comment: ''
-    const: '1'
+    delay: delay
     maxoutbuf: '0'
     minoutbuf: '0'
+    num_ports: '1'
+    showports: 'False'
     type: float
     vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [648, 600.0]
+    coordinate: [600, 256.0]
+    rotation: 0
+    state: enabled
+- name: blocks_delay_1
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '20'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    showports: 'False'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [752, 640.0]
+    rotation: 0
+    state: enabled
+- name: blocks_delay_1_0
+  id: blocks_delay
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    delay: '10'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_ports: '1'
+    showports: 'False'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [760, 576.0]
     rotation: 0
     state: enabled
 - name: blocks_throttle_0
@@ -136,76 +187,47 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [848, 504.0]
-    rotation: 0
-    state: disabled
-- name: epy_block_0_0
-  id: epy_block
-  parameters:
-    _source_code: "import numpy as np\nfrom gnuradio import gr\n\nclass ulaw_decoder(gr.sync_block):\n\
-      \    def __init__(self, mu=255):\n        gr.sync_block.__init__(\n        \
-      \    self,\n            name='u-law Decoder',\n            in_sig=[np.float32],\n\
-      \            out_sig=[np.float32]\n        )\n        self.mu = mu\n\n    def\
-      \ ulaw_decode(self, x):\n        # Ensure x is within the valid range and handle\
-      \ NaN and Inf values\n        x = np.nan_to_num(x, nan=0.0, posinf=1.0, neginf=-1.0)\
-      \  # Replace NaN and Inf values\n        x = np.clip(x, -1.0, 1.0)  # Ensure\
-      \ values are within the range [-1, 1]\n\n        # Perform u-law decoding\n\
-      \        decoded = np.sign(x) * (1 / self.mu) * ((1 + self.mu) ** np.abs(x)\
-      \ - 1)\n        decoded = np.nan_to_num(decoded, nan=0.0, posinf=1.0, neginf=-1.0)\
-      \  # Replace NaN and Inf values again\n        return decoded\n\n    def normalize_audio(self,\
-      \ audio):\n        max_val = np.max(np.abs(audio))\n        if np.isfinite(max_val)\
-      \ and max_val > 0:\n            normalized_audio = audio / max_val\n       \
-      \     print(\"Normalization factor:\", max_val)\n            return normalized_audio\n\
-      \        print(\"Invalid normalization factor:\", max_val)\n        return audio\n\
-      \n    def work(self, input_items, output_items):\n        # Apply u-law decoding\n\
-      \        decoded_signal = self.ulaw_decode(input_items[0])\n\n        # Debug\
-      \ prints to check signal values before normalization\n        print(\"Decoded\
-      \ Min:\", np.min(decoded_signal), \"Decoded Max:\", np.max(decoded_signal))\n\
-      \n        # Normalize the decoded signal\n        normalized_signal = self.normalize_audio(decoded_signal)\n\
-      \n        # Debug prints to check signal values after normalization\n      \
-      \  print(\"Normalized Min:\", np.min(normalized_signal), \"Normalized Max:\"\
-      , np.max(normalized_signal))\n\n        # Clip the values to avoid overflow\n\
-      \        output_items[0][:] = np.clip(normalized_signal, -1.0, 1.0)\n\n    \
-      \    # Debug prints to check final signal values\n        print(\"Output Min:\"\
-      , np.min(output_items[0]), \"Output Max:\", np.max(output_items[0]))\n\n   \
-      \     return len(output_items[0])\n"
-    affinity: ''
-    alias: ''
-    comment: ''
-    maxoutbuf: '0'
-    minoutbuf: '0'
-    mu: '255'
-  states:
-    _io_cache: ('u-law Decoder', 'ulaw_decoder', [('mu', '255')], [('0', 'float',
-      1)], [('0', 'float', 1)], '', ['mu'])
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [392, 608.0]
+    coordinate: [368, 256.0]
     rotation: 0
     state: enabled
-- name: filter_fft_low_pass_filter_0
-  id: filter_fft_low_pass_filter
+- name: blocks_vector_source_x_0
+  id: blocks_vector_source_x
   parameters:
     affinity: ''
     alias: ''
-    beta: '6.76'
     comment: ''
-    cutoff_freq: '5000'
-    decim: '1'
-    gain: '1'
     maxoutbuf: '0'
     minoutbuf: '0'
-    nthreads: '1'
-    samp_rate: samp_rate
-    type: fff
-    width: '100'
-    win: window.WIN_HAMMING
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: '[1]*sps + [0]*(1024-sps)'
+    vlen: '1'
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [896, 576.0]
+    coordinate: [112, 236.0]
+    rotation: 0
+    state: enabled
+- name: blocks_vector_source_x_0_0
+  id: blocks_vector_source_x
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    repeat: 'True'
+    tags: '[]'
+    type: float
+    vector: '[1]*sps + [0]*(1024-sps)'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [112, 420.0]
     rotation: 0
     state: enabled
 - name: qtgui_freq_sink_x_0
@@ -259,7 +281,7 @@ blocks:
     maxoutbuf: '0'
     minoutbuf: '0'
     name: '""'
-    nconnections: '1'
+    nconnections: '2'
     norm_window: 'False'
     showports: 'False'
     tr_chan: '0'
@@ -286,7 +308,104 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1344, 484.0]
+    coordinate: [880, 340.0]
+    rotation: 0
+    state: enabled
+- name: qtgui_time_sink_x_0
+  id: qtgui_time_sink_x
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha1: '1.0'
+    alpha10: '1.0'
+    alpha2: '1.0'
+    alpha3: '1.0'
+    alpha4: '1.0'
+    alpha5: '1.0'
+    alpha6: '1.0'
+    alpha7: '1.0'
+    alpha8: '1.0'
+    alpha9: '1.0'
+    autoscale: 'False'
+    axislabels: 'True'
+    color1: blue
+    color10: dark blue
+    color2: red
+    color3: green
+    color4: black
+    color5: cyan
+    color6: magenta
+    color7: yellow
+    color8: dark red
+    color9: dark green
+    comment: ''
+    ctrlpanel: 'False'
+    entags: 'True'
+    grid: 'False'
+    gui_hint: ''
+    label1: Signal 1
+    label10: Signal 10
+    label2: Signal 2
+    label3: Signal 3
+    label4: Signal 4
+    label5: Signal 5
+    label6: Signal 6
+    label7: Signal 7
+    label8: Signal 8
+    label9: Signal 9
+    legend: 'True'
+    marker1: '-1'
+    marker10: '-1'
+    marker2: '-1'
+    marker3: '-1'
+    marker4: '-1'
+    marker5: '-1'
+    marker6: '-1'
+    marker7: '-1'
+    marker8: '-1'
+    marker9: '-1'
+    name: '""'
+    nconnections: '2'
+    size: '1024'
+    srate: samp_rate
+    stemplot: 'False'
+    style1: '1'
+    style10: '1'
+    style2: '1'
+    style3: '1'
+    style4: '1'
+    style5: '1'
+    style6: '1'
+    style7: '1'
+    style8: '1'
+    style9: '1'
+    tr_chan: '0'
+    tr_delay: '0'
+    tr_level: '0.0'
+    tr_mode: qtgui.TRIG_MODE_FREE
+    tr_slope: qtgui.TRIG_SLOPE_POS
+    tr_tag: '""'
+    type: float
+    update_time: '0.10'
+    width1: '1'
+    width10: '1'
+    width2: '1'
+    width3: '1'
+    width4: '1'
+    width5: '1'
+    width6: '1'
+    width7: '1'
+    width8: '1'
+    width9: '1'
+    ylabel: Amplitude
+    ymax: '1'
+    ymin: '-1'
+    yunit: '""'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 164.0]
     rotation: 0
     state: enabled
 - name: qtgui_time_sink_x_1
@@ -343,7 +462,7 @@ blocks:
     marker8: '-1'
     marker9: '-1'
     name: '""'
-    nconnections: '1'
+    nconnections: '3'
     size: '1024'
     srate: samp_rate
     stemplot: 'False'
@@ -383,61 +502,46 @@ blocks:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [1208, 180.0]
+    coordinate: [944, 488.0]
     rotation: 0
     state: enabled
-- name: virtual_sink_0
-  id: virtual_sink
+- name: root_raised_cosine_filter_0
+  id: root_raised_cosine_filter
   parameters:
+    affinity: ''
     alias: ''
+    alpha: alpha
     comment: ''
-    stream_id: original
+    decim: '1'
+    gain: '1'
+    interp: '1'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    ntaps: taps
+    samp_rate: samp_rate
+    sym_rate: samp_rate/sps
+    type: fir_filter_fff
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [368, 344.0]
-    rotation: 0
-    state: enabled
-- name: virtual_sink_0_0
-  id: virtual_sink
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: PCM
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [1288, 616.0]
-    rotation: 0
-    state: enabled
-- name: virtual_source_1_0
-  id: virtual_source
-  parameters:
-    alias: ''
-    comment: ''
-    stream_id: PCM
-  states:
-    bus_sink: false
-    bus_source: false
-    bus_structure: null
-    coordinate: [776, 272.0]
+    coordinate: [448, 472.0]
     rotation: 0
     state: enabled
 
 connections:
-- [blocks_file_source_0, '0', epy_block_0_0, '0']
-- [blocks_file_source_0, '0', virtual_sink_0, '0']
-- [blocks_multiply_const_vxx_0, '0', blocks_throttle_0, '0']
-- [blocks_multiply_const_vxx_0, '0', filter_fft_low_pass_filter_0, '0']
-- [blocks_throttle_0, '0', filter_fft_low_pass_filter_0, '0']
-- [blocks_throttle_0, '0', virtual_sink_0_0, '0']
-- [epy_block_0_0, '0', blocks_multiply_const_vxx_0, '0']
-- [filter_fft_low_pass_filter_0, '0', virtual_sink_0_0, '0']
-- [virtual_source_1_0, '0', audio_sink_0, '0']
-- [virtual_source_1_0, '0', qtgui_freq_sink_x_0, '0']
-- [virtual_source_1_0, '0', qtgui_time_sink_x_1, '0']
+- [blocks_delay_0, '0', qtgui_freq_sink_x_0, '0']
+- [blocks_delay_0, '0', qtgui_time_sink_x_0, '0']
+- [blocks_delay_1, '0', qtgui_time_sink_x_1, '2']
+- [blocks_delay_1_0, '0', qtgui_time_sink_x_1, '1']
+- [blocks_throttle_0, '0', blocks_delay_0, '0']
+- [blocks_vector_source_x_0, '0', blocks_throttle_0, '0']
+- [blocks_vector_source_x_0_0, '0', root_raised_cosine_filter_0, '0']
+- [root_raised_cosine_filter_0, '0', blocks_delay_1, '0']
+- [root_raised_cosine_filter_0, '0', blocks_delay_1_0, '0']
+- [root_raised_cosine_filter_0, '0', qtgui_freq_sink_x_0, '1']
+- [root_raised_cosine_filter_0, '0', qtgui_time_sink_x_0, '1']
+- [root_raised_cosine_filter_0, '0', qtgui_time_sink_x_1, '0']
 
 metadata:
   file_format: 1

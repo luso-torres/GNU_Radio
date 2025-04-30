@@ -1,0 +1,280 @@
+<<< Welcome to GNU Radio Companion 3.10.11.0 >>>
+
+Block paths:
+	C:\Users\Junio\AppData\Roaming\.local\state\gnuradio
+	C:\Users\Junio\radioconda\envs\gnuradio\Library\share\gnuradio\grc\blocks
+
+Loading: "C:\Users\Junio\OneDrive\Desktop\Exemplos\ex1.grc"
+>>> Done
+
+Loading: "D:\SDR-GNU\GNU_Radio\audio_converter\wav_audio_decoder.grc"
+>>> Done
+
+Loading: "D:\SDR-GNU\GNU_Radio\E_WF\SDR.grc"
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py"
+>>> Warning: The block 'blocks_throttle_0' is deprecated.
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\RRC-filter\untitled.py
+
+
+>>> Done
+
+Generating: "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\E_WF\SDR.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+[INFO] [USRP2] Opening a USRP2/N-Series device...
+[INFO] [USRP2] Current recv frame size: 1472 bytes
+[INFO] [USRP2] Current send frame size: 1472 bytes
+[INFO] [USRP2] Detecting internal GPSDO.... 
+[INFO] [GPS] No GPSDO found
+[WARNING] [MULTI_USRP] The hardware does not support the requested RX sample rate:
+Target sample rate: 0.032000 MSps
+Actual sample rate: 0.195312 MSps
+
+usrp_source :warning: Requested sample rate 32000 Hz not set; instead, 195312 Hz used.
+[INFO] [MULTI_USRP]     1) catch time transition at pps edge
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 258, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 235, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 83, in __init__
+    self.uhd_usrp_source_0.set_time_unknown_pps(uhd.time_spec(0))
+RuntimeError: RuntimeError: Board 0 may not be getting a PPS signal!
+No PPS detected within the time interval.
+See the application notes for your device.
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.36
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.36
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.36
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.36
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 187, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 164, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 82, in __init__
+    self.uhd_usrp_sink_0 = uhd.usrp_sink(
+RuntimeError: LookupError: KeyError: No devices found for ----->
+Device Address:
+    192.168.1.36: 
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 187, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 164, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 82, in __init__
+    self.uhd_usrp_sink_0 = uhd.usrp_sink(
+RuntimeError: LookupError: KeyError: No devices found for ----->
+Device Address:
+    192.168.1.35: 
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\E_WF\SDR.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+[INFO] [USRP2] Opening a USRP2/N-Series device...
+[INFO] [USRP2] Current recv frame size: 1472 bytes
+[INFO] [USRP2] Current send frame size: 1472 bytes
+[WARNING] [MULTI_USRP] The hardware does not support the requested RX sample rate:
+Target sample rate: 0.032000 MSps
+Actual sample rate: 0.195312 MSps
+
+usrp_source :warning: Requested sample rate 32000 Hz not set; instead, 195312 Hz used.
+[INFO] [MULTI_USRP]     1) catch time transition at pps edge
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 258, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 235, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\SDR.py", line 83, in __init__
+    self.uhd_usrp_source_0.set_time_unknown_pps(uhd.time_spec(0))
+RuntimeError: RuntimeError: Board 0 may not be getting a PPS signal!
+No PPS detected within the time interval.
+See the application notes for your device.
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+[ERROR] [UHD] Device discovery error: unknown key format: 192.168.1.35
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 181, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 158, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\audio_converter\xdd.py", line 82, in __init__
+    self.uhd_usrp_sink_0 = uhd.usrp_sink(
+RuntimeError: LookupError: KeyError: No devices found for ----->
+Device Address:
+    192.168.1.35: 
+
+
+>>> Done (return code 1)
+
+Generating: "D:\SDR-GNU\GNU_Radio\E_WF\seno.py"
+
+Executing: C:\Users\Junio\radioconda\envs\gnuradio\python.exe -u D:\SDR-GNU\GNU_Radio\E_WF\seno.py
+
+[INFO] [UHD] Win32; Microsoft Visual C++ version 14.2; Boost_108400; UHD_4.7.0.0-release
+Traceback (most recent call last):
+  File "D:\SDR-GNU\GNU_Radio\E_WF\seno.py", line 378, in <module>
+    main()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\seno.py", line 355, in main
+    tb = top_block_cls()
+  File "D:\SDR-GNU\GNU_Radio\E_WF\seno.py", line 78, in __init__
+    self.uhd_usrp_source_0 = uhd.usrp_source(
+RuntimeError: LookupError: KeyError: No devices found for ----->
+Device Address:
+    addr: 192.168.1.36
+
+
+>>> Done (return code 1)
