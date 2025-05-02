@@ -40,14 +40,14 @@ blocks:
     gui_hint: 0,1
     label: ''
     label0: Cos
-    label1: Sin
+    label1: Random Source
     label2: ''
     label3: ''
     label4: ''
     labels: '[]'
     num_opts: '2'
     option0: '0'
-    option1: np.pi/2
+    option1: '1'
     option2: '2'
     option3: '3'
     option4: '4'
@@ -96,50 +96,77 @@ blocks:
     coordinate: [200, 12]
     rotation: 0
     state: enabled
-- name: analog_sig_source_x_0
-  id: analog_sig_source_x
+- name: analog_random_source_x_0
+  id: analog_random_source_x
   parameters:
     affinity: ''
     alias: ''
-    amp: '1'
     comment: ''
-    freq: freq
+    max: '1'
     maxoutbuf: '0'
+    min: '0'
     minoutbuf: '0'
-    offset: '0'
-    phase: chooser
-    samp_rate: samp_rate
-    showports: 'False'
-    type: float
-    waveform: analog.GR_COS_WAVE
+    num_samps: '1000'
+    repeat: 'True'
+    type: int
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [136, 244.0]
+    coordinate: [120, 632.0]
     rotation: 0
     state: enabled
-- name: analog_sig_source_x_0_0
-  id: analog_sig_source_x
+- name: analog_random_uniform_source_x_1
+  id: analog_random_uniform_source_x
   parameters:
     affinity: ''
     alias: ''
-    amp: '1'
     comment: ''
-    freq: freq
+    maximum: '1'
     maxoutbuf: '0'
+    minimum: '0'
     minoutbuf: '0'
-    offset: '0'
-    phase: chooser
-    samp_rate: samp_rate
-    showports: 'False'
-    type: float
-    waveform: analog.GR_SIN_WAVE
+    seed: '0'
+    type: int
   states:
     bus_sink: false
     bus_source: false
     bus_structure: null
-    coordinate: [120, 460.0]
+    coordinate: [32, 384.0]
+    rotation: 0
+    state: enabled
+- name: blocks_int_to_float_0
+  id: blocks_int_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [288, 656.0]
+    rotation: 0
+    state: enabled
+- name: blocks_int_to_float_0_0
+  id: blocks_int_to_float
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    scale: '1'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 256.0]
     rotation: 0
     state: enabled
 - name: blocks_selector_0
@@ -395,9 +422,10 @@ blocks:
     state: enabled
 
 connections:
-- [analog_sig_source_x_0, '0', blocks_selector_0, '0']
-- [analog_sig_source_x_0, '0', iir_filter_xxx_0, '0']
-- [analog_sig_source_x_0_0, '0', blocks_selector_0, '1']
+- [analog_random_source_x_0, '0', blocks_int_to_float_0, '0']
+- [analog_random_uniform_source_x_1, '0', blocks_int_to_float_0_0, '0']
+- [blocks_int_to_float_0, '0', blocks_selector_0, '1']
+- [blocks_int_to_float_0_0, '0', blocks_selector_0, '0']
 - [blocks_selector_0, '0', single_pole_iir_filter_xx_0, '0']
 - [iir_filter_xxx_0, '0', qtgui_freq_sink_x_0, '0']
 - [iir_filter_xxx_0, '0', qtgui_time_sink_x_0, '0']

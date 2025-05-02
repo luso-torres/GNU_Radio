@@ -15,6 +15,7 @@ from PyQt5 import QtCore
 from PyQt5.QtCore import QObject, pyqtSlot
 from gnuradio import analog
 from gnuradio import blocks
+import numpy
 from gnuradio import filter
 from gnuradio import gr
 from gnuradio.filter import firdes
@@ -79,35 +80,6 @@ class indirect_FM(gr.top_block, Qt.QWidget):
         for r in range(0, 1):
             self.top_grid_layout.setRowStretch(r, 1)
         for c in range(0, 1):
-            self.top_grid_layout.setColumnStretch(c, 1)
-        # Create the options list
-        self._chooser_options = [0, 1.5707963267948966]
-        # Create the labels list
-        self._chooser_labels = ['Cos', 'Sin']
-        # Create the combo box
-        # Create the radio buttons
-        self._chooser_group_box = Qt.QGroupBox("'chooser'" + ": ")
-        self._chooser_box = Qt.QVBoxLayout()
-        class variable_chooser_button_group(Qt.QButtonGroup):
-            def __init__(self, parent=None):
-                Qt.QButtonGroup.__init__(self, parent)
-            @pyqtSlot(int)
-            def updateButtonChecked(self, button_id):
-                self.button(button_id).setChecked(True)
-        self._chooser_button_group = variable_chooser_button_group()
-        self._chooser_group_box.setLayout(self._chooser_box)
-        for i, _label in enumerate(self._chooser_labels):
-            radio_button = Qt.QRadioButton(_label)
-            self._chooser_box.addWidget(radio_button)
-            self._chooser_button_group.addButton(radio_button, i)
-        self._chooser_callback = lambda i: Qt.QMetaObject.invokeMethod(self._chooser_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._chooser_options.index(i)))
-        self._chooser_callback(self.chooser)
-        self._chooser_button_group.buttonClicked[int].connect(
-            lambda i: self.set_chooser(self._chooser_options[i]))
-        self.top_grid_layout.addWidget(self._chooser_group_box, 0, 1, 1, 1)
-        for r in range(0, 1):
-            self.top_grid_layout.setRowStretch(r, 1)
-        for c in range(1, 2):
             self.top_grid_layout.setColumnStretch(c, 1)
         self.single_pole_iir_filter_xx_0 = filter.single_pole_iir_filter_ff(1, 1)
         self.qtgui_time_sink_x_0 = qtgui.time_sink_f(
@@ -201,17 +173,50 @@ class indirect_FM(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+        # Create the options list
+        self._chooser_options = [0, 1]
+        # Create the labels list
+        self._chooser_labels = ['Cos', 'Random Source']
+        # Create the combo box
+        # Create the radio buttons
+        self._chooser_group_box = Qt.QGroupBox("'chooser'" + ": ")
+        self._chooser_box = Qt.QVBoxLayout()
+        class variable_chooser_button_group(Qt.QButtonGroup):
+            def __init__(self, parent=None):
+                Qt.QButtonGroup.__init__(self, parent)
+            @pyqtSlot(int)
+            def updateButtonChecked(self, button_id):
+                self.button(button_id).setChecked(True)
+        self._chooser_button_group = variable_chooser_button_group()
+        self._chooser_group_box.setLayout(self._chooser_box)
+        for i, _label in enumerate(self._chooser_labels):
+            radio_button = Qt.QRadioButton(_label)
+            self._chooser_box.addWidget(radio_button)
+            self._chooser_button_group.addButton(radio_button, i)
+        self._chooser_callback = lambda i: Qt.QMetaObject.invokeMethod(self._chooser_button_group, "updateButtonChecked", Qt.Q_ARG("int", self._chooser_options.index(i)))
+        self._chooser_callback(self.chooser)
+        self._chooser_button_group.buttonClicked[int].connect(
+            lambda i: self.set_chooser(self._chooser_options[i]))
+        self.top_grid_layout.addWidget(self._chooser_group_box, 0, 1, 1, 1)
+        for r in range(0, 1):
+            self.top_grid_layout.setRowStretch(r, 1)
+        for c in range(1, 2):
+            self.top_grid_layout.setColumnStretch(c, 1)
         self.blocks_selector_0 = blocks.selector(gr.sizeof_float*1,0,0)
         self.blocks_selector_0.set_enabled(True)
-        self.analog_sig_source_x_0_0 = analog.sig_source_f(samp_rate, analog.GR_SIN_WAVE, freq, 1, 0, chooser)
-        self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, freq, 1, 0, chooser)
+        self.blocks_int_to_float_0_0 = blocks.int_to_float(1, 1)
+        self.blocks_int_to_float_0 = blocks.int_to_float(1, 1)
+        self.analog_random_uniform_source_x_1 = analog.random_uniform_source_i(0, 1, 0)
+        self.analog_random_source_x_0 = blocks.vector_source_i(list(map(int, numpy.random.randint(0, 1, 1000))), True)
 
 
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_selector_0, 0))
-        self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_selector_0, 1))
+        self.connect((self.analog_random_source_x_0, 0), (self.blocks_int_to_float_0, 0))
+        self.connect((self.analog_random_uniform_source_x_1, 0), (self.blocks_int_to_float_0_0, 0))
+        self.connect((self.blocks_int_to_float_0, 0), (self.blocks_selector_0, 1))
+        self.connect((self.blocks_int_to_float_0_0, 0), (self.blocks_selector_0, 0))
         self.connect((self.blocks_selector_0, 0), (self.single_pole_iir_filter_xx_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0, 0), (self.qtgui_time_sink_x_0, 0))
@@ -230,8 +235,6 @@ class indirect_FM(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
-        self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
-        self.analog_sig_source_x_0_0.set_sampling_freq(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
 
@@ -240,8 +243,6 @@ class indirect_FM(gr.top_block, Qt.QWidget):
 
     def set_freq(self, freq):
         self.freq = freq
-        self.analog_sig_source_x_0.set_frequency(self.freq)
-        self.analog_sig_source_x_0_0.set_frequency(self.freq)
 
     def get_chooser(self):
         return self.chooser
@@ -249,8 +250,6 @@ class indirect_FM(gr.top_block, Qt.QWidget):
     def set_chooser(self, chooser):
         self.chooser = chooser
         self._chooser_callback(self.chooser)
-        self.analog_sig_source_x_0.set_phase(self.chooser)
-        self.analog_sig_source_x_0_0.set_phase(self.chooser)
 
 
 
