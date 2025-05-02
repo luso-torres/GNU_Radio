@@ -1,15 +1,7 @@
-"""
-Embedded Python Blocks:
-
-Each time this file is saved, GRC will instantiate the first class it finds
-to get ports and parameters of your block. The arguments to __init__ will
-be the parameters. All of them are required to have default values!
-"""
-
 import numpy as np
 from gnuradio import gr
 
-class blk(gr.sync_block):  # other base classes are basic_block, decim_block, interp_block
+class blk(gr.sync_block): 
     def __init__(self, threshold=0.0, mode=0, coeff=0.15):  # only default arguments here
         gr.sync_block.__init__(
             self,
@@ -32,7 +24,7 @@ class blk(gr.sync_block):  # other base classes are basic_block, decim_block, in
 
         for i in range(len(input_items[0])):
             if self.mode == 1:
-                buf[i] = input_items[0][i]
+                buf[i] = abs(input_items[0][i])
             else:
                 if input_items[0][i] > self.threshold:
                     buf[i] = input_items[0][i]

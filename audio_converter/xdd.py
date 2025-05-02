@@ -7,6 +7,17 @@
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
 # Author: luso
+<<<<<<< HEAD
+# GNU Radio version: 3.10.11.0
+
+from PyQt5 import Qt
+from gnuradio import qtgui
+from gnuradio import blocks
+import pmt
+from gnuradio import filter
+from gnuradio.filter import firdes
+from gnuradio import gr
+=======
 # GNU Radio version: 3.10.10.0
 
 from PyQt5 import Qt
@@ -17,6 +28,7 @@ from gnuradio import blocks
 import pmt
 from gnuradio import gr
 from gnuradio.filter import firdes
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 from gnuradio.fft import window
 import sys
 import signal
@@ -25,7 +37,11 @@ from argparse import ArgumentParser
 from gnuradio.eng_arg import eng_float, intx
 from gnuradio import eng_notation
 import sip
+<<<<<<< HEAD
+import threading
+=======
 import xdd_epy_block_0 as epy_block_0  # embedded python block
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 import xdd_epy_block_0_0 as epy_block_0_0  # embedded python block
 
 
@@ -53,7 +69,11 @@ class xdd(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
+<<<<<<< HEAD
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "xdd")
+=======
         self.settings = Qt.QSettings("GNU Radio", "xdd")
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
         try:
             geometry = self.settings.value("geometry")
@@ -61,11 +81,17 @@ class xdd(gr.top_block, Qt.QWidget):
                 self.restoreGeometry(geometry)
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
+<<<<<<< HEAD
+        self.flowgraph_started = threading.Event()
+=======
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
         ##################################################
         # Variables
         ##################################################
         self.samp_rate = samp_rate = 48000
+<<<<<<< HEAD
+=======
         self.freq_9 = freq_9 = 0.1
         self.freq_8 = freq_8 = 0
         self.freq_7 = freq_7 = 0
@@ -77,11 +103,14 @@ class xdd(gr.top_block, Qt.QWidget):
         self.freq_1 = freq_1 = 0
         self.freq_0 = freq_0 = 0
         self.Volume = Volume = 0.01
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
         ##################################################
         # Blocks
         ##################################################
 
+<<<<<<< HEAD
+=======
         self._freq_9_range = qtgui.Range(0, 1, .01, 0.1, 200)
         self._freq_9_win = qtgui.RangeWidget(self._freq_9_range, self.set_freq_9, "32 Hz", "dial", float, QtCore.Qt.Vertical)
         self.top_grid_layout.addWidget(self._freq_9_win, 0, 0, 1, 1)
@@ -155,11 +184,16 @@ class xdd(gr.top_block, Qt.QWidget):
         self._Volume_range = qtgui.Range(0, 0.1, 0.01, 0.01, 200)
         self._Volume_win = qtgui.RangeWidget(self._Volume_range, self.set_Volume, "Volume", "dial", float, QtCore.Qt.Horizontal)
         self.top_layout.addWidget(self._Volume_win)
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
         self.qtgui_time_sink_x_1 = qtgui.time_sink_f(
             1024, #size
             samp_rate, #samp_rate
             "", #name
+<<<<<<< HEAD
+            1, #number of inputs
+=======
             2, #number of inputs
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
             None # parent
         )
         self.qtgui_time_sink_x_1.set_update_time(0.10)
@@ -190,7 +224,11 @@ class xdd(gr.top_block, Qt.QWidget):
             -1, -1, -1, -1, -1]
 
 
+<<<<<<< HEAD
+        for i in range(1):
+=======
         for i in range(2):
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
             if len(labels[i]) == 0:
                 self.qtgui_time_sink_x_1.set_line_label(i, "Data {0}".format(i))
             else:
@@ -209,7 +247,11 @@ class xdd(gr.top_block, Qt.QWidget):
             0, #fc
             samp_rate, #bw
             "", #name
+<<<<<<< HEAD
+            1,
+=======
             2,
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
             None # parent
         )
         self.qtgui_freq_sink_x_0.set_update_time(0.10)
@@ -235,7 +277,11 @@ class xdd(gr.top_block, Qt.QWidget):
         alphas = [1.0, 1.0, 1.0, 1.0, 1.0,
             1.0, 1.0, 1.0, 1.0, 1.0]
 
+<<<<<<< HEAD
+        for i in range(1):
+=======
         for i in range(2):
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
             if len(labels[i]) == 0:
                 self.qtgui_freq_sink_x_0.set_line_label(i, "Data {0}".format(i))
             else:
@@ -246,6 +292,13 @@ class xdd(gr.top_block, Qt.QWidget):
 
         self._qtgui_freq_sink_x_0_win = sip.wrapinstance(self.qtgui_freq_sink_x_0.qwidget(), Qt.QWidget)
         self.top_layout.addWidget(self._qtgui_freq_sink_x_0_win)
+<<<<<<< HEAD
+        self.filter_fft_low_pass_filter_0 = filter.fft_filter_fff(1, firdes.low_pass(1, samp_rate, 5000, 100, window.WIN_HAMMING, 6.76), 1)
+        self.epy_block_0_0 = epy_block_0_0.ulaw_decoder(mu=255)
+        self.blocks_multiply_const_vxx_0 = blocks.multiply_const_ff(1)
+        self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, 'D:\\SDR-GNU\\GNU_Radio\\audio_converter\\output.wav', True, 0, 0)
+        self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
+=======
         self.epy_block_0_0 = epy_block_0_0.ulaw_decoder(mu=255)
         self.epy_block_0 = epy_block_0.FrequencyBandFilter(filter_length=1, sample_rate=samp_rate, gains=[freq_0,freq_9, freq_1,freq_2, freq_3, freq_4, freq_5, freq_6, freq_7,freq_8])
         self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_ff(Volume)
@@ -253,12 +306,23 @@ class xdd(gr.top_block, Qt.QWidget):
         self.blocks_file_source_0 = blocks.file_source(gr.sizeof_float*1, 'E:\\Repositorios\\GNU_Radio\\audio_converter\\output.wav', True, 0, 0)
         self.blocks_file_source_0.set_begin_tag(pmt.PMT_NIL)
         self.audio_sink_0 = audio.sink(samp_rate, '', True)
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
 
         ##################################################
         # Connections
         ##################################################
         self.connect((self.blocks_file_source_0, 0), (self.epy_block_0_0, 0))
+<<<<<<< HEAD
+        self.connect((self.blocks_multiply_const_vxx_0, 0), (self.filter_fft_low_pass_filter_0, 0))
+        self.connect((self.epy_block_0_0, 0), (self.blocks_multiply_const_vxx_0, 0))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.qtgui_freq_sink_x_0, 0))
+        self.connect((self.filter_fft_low_pass_filter_0, 0), (self.qtgui_time_sink_x_1, 0))
+
+
+    def closeEvent(self, event):
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "xdd")
+=======
         self.connect((self.blocks_file_source_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0, 0), (self.qtgui_freq_sink_x_0, 1))
@@ -271,6 +335,7 @@ class xdd(gr.top_block, Qt.QWidget):
 
     def closeEvent(self, event):
         self.settings = Qt.QSettings("GNU Radio", "xdd")
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -282,6 +347,12 @@ class xdd(gr.top_block, Qt.QWidget):
 
     def set_samp_rate(self, samp_rate):
         self.samp_rate = samp_rate
+<<<<<<< HEAD
+        self.filter_fft_low_pass_filter_0.set_taps(firdes.low_pass(1, self.samp_rate, 5000, 100, window.WIN_HAMMING, 6.76))
+        self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
+        self.qtgui_time_sink_x_1.set_samp_rate(self.samp_rate)
+
+=======
         self.epy_block_0.sample_rate = self.samp_rate
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_1.set_samp_rate(self.samp_rate)
@@ -363,6 +434,7 @@ class xdd(gr.top_block, Qt.QWidget):
         self.Volume = Volume
         self.blocks_multiply_const_vxx_0_0.set_k(self.Volume)
 
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
 
 
@@ -373,6 +445,10 @@ def main(top_block_cls=xdd, options=None):
     tb = top_block_cls()
 
     tb.start()
+<<<<<<< HEAD
+    tb.flowgraph_started.set()
+=======
+>>>>>>> 6071d9091e046adb55bbe6b897ce37764840a28a
 
     tb.show()
 
