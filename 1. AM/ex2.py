@@ -7,7 +7,7 @@
 # GNU Radio Python Flow Graph
 # Title: Not titled yet
 # Author: luso
-# GNU Radio version: 3.10.10.0
+# GNU Radio version: 3.10.11.0
 
 from PyQt5 import Qt
 from gnuradio import qtgui
@@ -25,6 +25,7 @@ from gnuradio.eng_arg import eng_float, intx
 import ex2_epy_module_0 as epy_module_0  # embedded python module
 import ex2_epy_module_1 as epy_module_1  # embedded python module
 import sip
+import threading
 
 
 
@@ -51,7 +52,7 @@ class ex2(gr.top_block, Qt.QWidget):
         self.top_grid_layout = Qt.QGridLayout()
         self.top_layout.addLayout(self.top_grid_layout)
 
-        self.settings = Qt.QSettings("GNU Radio", "ex2")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "ex2")
 
         try:
             geometry = self.settings.value("geometry")
@@ -59,6 +60,7 @@ class ex2(gr.top_block, Qt.QWidget):
                 self.restoreGeometry(geometry)
         except BaseException as exc:
             print(f"Qt GUI: Could not restore geometry: {str(exc)}", file=sys.stderr)
+        self.flowgraph_started = threading.Event()
 
         ##################################################
         # Variables
@@ -172,6 +174,8 @@ class ex2(gr.top_block, Qt.QWidget):
         self.blocks_throttle2_0 = blocks.throttle( gr.sizeof_float*1, samp_rate, True, 0 if "auto" == "auto" else max( int(float(0.1) * samp_rate) if "auto" == "time" else int(0.1), 1) )
         self.blocks_multiply_xx_0 = blocks.multiply_vff(1)
         self.blocks_head_0 = blocks.head(gr.sizeof_float*1, (round(1*1e5)))
+        self.blocks_add_xx_0 = blocks.add_vff(1)
+        self.analog_sig_source_x_1 = analog.sig_source_f(samp_rate, analog.GR_CONST_WAVE, 0, 2, 0, 0)
         self.analog_sig_source_x_0_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, f_c, 1, 0, 0)
         self.analog_sig_source_x_0 = analog.sig_source_f(samp_rate, analog.GR_COS_WAVE, freq, 1, 0, 0)
 
@@ -179,10 +183,12 @@ class ex2(gr.top_block, Qt.QWidget):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_multiply_xx_0, 0))
+        self.connect((self.analog_sig_source_x_0, 0), (self.blocks_add_xx_0, 1))
         self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_freq_sink_x_0, 1))
         self.connect((self.analog_sig_source_x_0, 0), (self.qtgui_time_sink_x_0, 1))
         self.connect((self.analog_sig_source_x_0_0, 0), (self.blocks_multiply_xx_0, 1))
+        self.connect((self.analog_sig_source_x_1, 0), (self.blocks_add_xx_0, 0))
+        self.connect((self.blocks_add_xx_0, 0), (self.blocks_multiply_xx_0, 0))
         self.connect((self.blocks_head_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.blocks_head_0, 0), (self.qtgui_time_sink_x_0, 0))
         self.connect((self.blocks_multiply_xx_0, 0), (self.blocks_throttle2_0, 0))
@@ -190,7 +196,7 @@ class ex2(gr.top_block, Qt.QWidget):
 
 
     def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "ex2")
+        self.settings = Qt.QSettings("gnuradio/flowgraphs", "ex2")
         self.settings.setValue("geometry", self.saveGeometry())
         self.stop()
         self.wait()
@@ -213,6 +219,7 @@ class ex2(gr.top_block, Qt.QWidget):
         self.samp_rate = samp_rate
         self.analog_sig_source_x_0.set_sampling_freq(self.samp_rate)
         self.analog_sig_source_x_0_0.set_sampling_freq(self.samp_rate)
+        self.analog_sig_source_x_1.set_sampling_freq(self.samp_rate)
         self.blocks_throttle2_0.set_sample_rate(self.samp_rate)
         self.qtgui_freq_sink_x_0.set_frequency_range(0, self.samp_rate)
         self.qtgui_time_sink_x_0.set_samp_rate(self.samp_rate)
@@ -234,6 +241,7 @@ def main(top_block_cls=ex2, options=None):
     tb = top_block_cls()
 
     tb.start()
+    tb.flowgraph_started.set()
 
     tb.show()
 
